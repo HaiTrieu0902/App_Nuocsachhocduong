@@ -1,37 +1,37 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-import '../global.css';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { View, Text, Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { Stack, router } from 'expo-router';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
+export default function _layout() {
+  /** EFFECT CHANEG TO AUTH LOGIN */
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
+    router.push('auth/login');
+  }, []);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="auth/login"
+    >
+      <Stack.Screen
+        name="auth/login"
+        options={{
+          headerTitle: 'Home',
+          headerRight: () => (
+            <Button
+              onPress={() => {
+                router.push('contact');
+              }}
+              title="Contact"
+            />
+          ),
+        }}
+      />
+      <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
   );
 }
