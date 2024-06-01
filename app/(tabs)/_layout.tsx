@@ -1,35 +1,45 @@
-import { Tabs } from 'expo-router';
+import { View, Text, Button } from 'react-native';
 import React from 'react';
+import { Tabs, router } from 'expo-router';
+import { Feather, AntDesign } from '@expo/vector-icons';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function _layout() {
   return (
     <Tabs
+      initialRouteName="feed"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+        tabBarActiveTintColor: 'red',
+        tabBarLabelStyle: {
+          fontSize: 13,
+          fontWeight: '400',
+          marginBottom: 0,
+          marginTop: -8,
+        },
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="feed"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarIcon: ({ color }) => <Feather name="list" size={24} color={color} />,
+          tabBarLabel: 'Feed',
+          headerTitle: 'Feed',
+          headerRight: () => <Button onPress={() => router.push('feed/new')} title="Add Post" />,
+          headerLeft: () => (
+            <Button
+              onPress={() => {
+                /* Thực hiện chức năng lọc ở đây */
+              }}
+              title="Lọc"
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="profile"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <AntDesign name="user" size={24} color={color} />,
+          tabBarLabel: 'Profile',
+          headerTitle: 'Profile',
         }}
       />
     </Tabs>
