@@ -1,21 +1,20 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
-
 import { useThemeColor } from '@/hooks/useThemeColor';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  className?: string | any;
 };
 
-export function ThemedText({ style, lightColor, darkColor, type = 'default', ...rest }: ThemedTextProps) {
+export function ThemedText({ style, lightColor, darkColor, type = 'default', className, ...rest }: ThemedTextProps) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
   return (
     <Text
       style={[
-        { color },
-        type === 'default' ? styles.default : undefined,
+        // { color },
         type === 'title' ? styles.title : undefined,
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
@@ -23,6 +22,7 @@ export function ThemedText({ style, lightColor, darkColor, type = 'default', ...
         style,
       ]}
       {...rest}
+      className={`${type === 'default' && 'text-base'} ${className}`}
     />
   );
 }
