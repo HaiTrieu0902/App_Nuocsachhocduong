@@ -1,14 +1,29 @@
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, useColorScheme } from 'react-native';
 import React, { useEffect } from 'react';
-import { Stack, router } from 'expo-router';
-
+import { SplashScreen, Stack, router } from 'expo-router';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import '../global.css';
 export default function _layout() {
-  /** EFFECT CHANEG TO AUTH LOGIN */
+  const colorScheme = useColorScheme();
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  });
+
   useEffect(() => {
-    router.push('auth/login');
-  }, []);
+    if (loaded) {
+      SplashScreen.hideAsync();
+      // Navigate to login after fonts are loaded
+      router.push('auth/login');
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
+    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <Stack
       screenOptions={{
         headerShown: false,
@@ -33,5 +48,6 @@ export default function _layout() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
+    // </ThemeProvider>
   );
 }
