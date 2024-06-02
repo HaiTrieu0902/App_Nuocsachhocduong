@@ -23,31 +23,31 @@ export default function _layout() {
   }
 
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-      initialRouteName="auth/login"
-    >
-      <Stack.Screen
-        name="auth/login"
-        options={{
-          headerTitle: 'Home',
-          headerRight: () => (
-            <Button
-              onPress={() => {
-                router.push('contact');
-              }}
-              title="Contact"
-            />
-          ),
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
         }}
-      />
-      <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
-    </Stack>
-    // </ThemeProvider>
+        initialRouteName="auth/login"
+      >
+        <Stack.Screen
+          name="auth/login"
+          options={{
+            headerTitle: 'Home',
+            headerRight: () => (
+              <Button
+                onPress={() => {
+                  router.push('contact');
+                }}
+                title="Contact"
+              />
+            ),
+          }}
+        />
+        <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </ThemeProvider>
   );
 }
