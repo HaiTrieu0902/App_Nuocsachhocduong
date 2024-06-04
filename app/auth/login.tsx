@@ -1,17 +1,19 @@
-import { View, Text, Button, Keyboard } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Link, router } from 'expo-router';
 import { SafeAreaViewUI, ThemedButton, ThemedInput } from '@/components';
-import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { useForm } from 'react-hook-form';
-import { Entypo, AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { ThemedView } from '@/components/ThemedView';
 import { COLOR_SYSTEM } from '@/constants/Colors';
-import { styleButton, styleInput } from '@/constants';
+import { EROUTER } from '@/constants/enum';
+import useToastNotifications from '@/hooks/useToastNotifications';
 import { ILoginParams } from '@/models/auth.model';
 import { loginAPI } from '@/services/api/auth.api';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
+import React, { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { Keyboard } from 'react-native';
 const LoginScreen = () => {
-  const [padding, setPadding] = useState<number>(100);
+  const showToast = useToastNotifications();
+
   /** SET UP form  */
   const { control, handleSubmit, reset } = useForm<any>({
     mode: 'onBlur',
@@ -23,32 +25,13 @@ const LoginScreen = () => {
     try {
       Keyboard.dismiss();
       const res = await loginAPI({ ...values, deviceLogin: 'web' });
-
-      router.push('feed/new');
-      // onGlobalLoading();
-      // const response = await loginAPI(value);
-      // const { token, ...user } = response;
-      // setUser(user);
-      // storage.set(STORAGE_KEYS.TOKEN, token);
-      // storage.set(STORAGE_KEYS.USER_VALUE, JSON.stringify(user));
+      showToast(`Đăng nhập ${res?.message}`, 'success', 'top');
+      // router.push('feed/new');
       // await registerTokenFCM();
     } catch (e: any) {
-      console.error('📢 [login.tsx:31] Error:', e);
-      // showToast({ message: e?.data?.message || 'Đăng nhập không thành công', type: 'error' });
+      showToast(`${e?.message}`, 'danger', 'top');
     } finally {
-      // offGlobalLoading();
     }
-  }, []);
-
-  /** USEEFFECT */
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => setPadding(30));
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => setPadding(100));
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
   }, []);
 
   return (
@@ -87,6 +70,12 @@ const LoginScreen = () => {
           classNameStyleLabel={'text-lg text-text_color'}
           icon={<MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />}
         />
+
+        <Link href={EROUTER.FORGOTPASSWORD} className="mt-2">
+          <ThemedText type="link" className={'!text-primary !text-[15px] text-right '}>
+            Quên mật khẩu?
+          </ThemedText>
+        </Link>
       </ThemedView>
 
       <ThemedView className="mt-11">
