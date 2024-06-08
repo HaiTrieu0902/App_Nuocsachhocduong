@@ -26,10 +26,9 @@ const forgotPasswordScreen = () => {
   const handleLogin = useCallback(async (values: { email: string }) => {
     try {
       Keyboard.dismiss();
-      // const res = await senOTPAPI(values);
-      // showToast(`Gửi mã OTP ${res?.message}, vui lòng kiểm tra email`, 'success', 'top');
+      const res = await senOTPAPI(values);
+      showToast(`Gửi mã OTP ${res?.message}, vui lòng kiểm tra email`, 'success', 'top');
       router.push({ pathname: EROUTER.VERIFYOTP, params: { email: values?.email as never } });
-      // await registerTokenFCM();
     } catch (e: any) {
       showToast(`${e?.message}`, 'danger', 'top');
     } finally {

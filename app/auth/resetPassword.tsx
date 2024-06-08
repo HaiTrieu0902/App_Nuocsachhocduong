@@ -8,27 +8,28 @@ import { useForm } from 'react-hook-form';
 import { AntDesign, Fontisto, MaterialIcons } from '@expo/vector-icons';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import useToastNotifications from '@/hooks/useToastNotifications';
-import { senOTPAPI } from '@/services/api/auth.api';
-import { Link, useRouter } from 'expo-router';
+import { forgotPasswordAPI, senOTPAPI } from '@/services/api/auth.api';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { EROUTER } from '@/constants/enum';
+import { IForgotPassword } from '@/models/auth.model';
 
 const forgotPasswordScreen = () => {
   const router = useRouter();
-
+  const { email }: any = useLocalSearchParams();
   const showToast = useToastNotifications();
   /** SET UP form  */
-  const { control, handleSubmit, reset } = useForm<any>({
+  const { control, handleSubmit, reset } = useForm<IForgotPassword>({
     mode: 'onBlur',
-    defaultValues: { email: '' },
+    defaultValues: { email: '', confirmPassword: '', password: '' },
   });
 
   /** handle submit send OTP */
-  const handleLogin = useCallback(async (values: { email: string }) => {
+  const handleLogin = useCallback(async (values: IForgotPassword) => {
     try {
       Keyboard.dismiss();
-      // const res = await senOTPAPI(values);
-      // showToast(`Gửi mã OTP ${res?.message}, vui lòng kiểm tra email`, 'success', 'top');
-      router.push({ pathname: EROUTER.VERIFYOTP, params: { email: values?.email as never } });
+      const res = await forgotPasswordAPI({ ...values, email: email });
+      showToast(`Thay đổi mật khẩu ${res?.message}, vui lòng đăng nhập`, 'success', 'top');
+      router.push({ pathname: EROUTER.LOGIN });
       // await registerTokenFCM();
     } catch (e: any) {
       showToast(`${e?.message}`, 'danger', 'top');

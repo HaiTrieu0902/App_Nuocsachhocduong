@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { AntDesign, Fontisto, FontAwesome5 } from '@expo/vector-icons';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import useToastNotifications from '@/hooks/useToastNotifications';
-import { senOTPAPI } from '@/services/api/auth.api';
+import { senOTPAPI, verifyOTPAPI } from '@/services/api/auth.api';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { EROUTER } from '@/constants/enum';
 
@@ -28,10 +28,10 @@ const VerifyOTPScreen = () => {
   const handleVerify = useCallback(async (values: { otp: string }) => {
     try {
       Keyboard.dismiss();
-      // const res = await senOTPAPI(values);
-      // showToast(`Gửi mã OTP ${res?.message}, vui lòng kiểm tra email`, 'success', 'top');
-      router.push(EROUTER.RESETPASSWORD);
-      // await registerTokenFCM();
+      const res = await verifyOTPAPI({ email: email, otp: values?.otp });
+      showToast(`Xác thực ${res?.message}, mời bạn thay đổi mật khẩu`, 'success', 'top');
+      router.push({ pathname: EROUTER.RESETPASSWORD, params: { email: email as never } });
+      reset();
     } catch (e: any) {
       showToast(`${e?.message}`, 'danger', 'top');
     } finally {
@@ -39,9 +39,15 @@ const VerifyOTPScreen = () => {
   }, []);
 
   /** handle send agian OTP */
-  const handleSendOtpAgain = () => {
+  const handleSendOtpAgain = async () => {
     if (email) {
-      console.log('📢 [verifyOTP.tsx:43] email', email);
+      try {
+        const res = await senOTPAPI({ email: email });
+        await reset();
+        showToast(`Gửi lại mã OTP ${res?.message}, vui lòng kiểm tra email`, 'success', 'top');
+      } catch (error: any) {
+        showToast(`${error?.message}`, 'danger', 'top');
+      }
     }
   };
 

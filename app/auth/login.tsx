@@ -7,11 +7,12 @@ import useToastNotifications from '@/hooks/useToastNotifications';
 import { ILoginParams } from '@/models/auth.model';
 import { loginAPI } from '@/services/api/auth.api';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Keyboard } from 'react-native';
 const LoginScreen = () => {
+  const router = useRouter();
   const showToast = useToastNotifications();
 
   /** SET UP form  */
@@ -26,7 +27,7 @@ const LoginScreen = () => {
       Keyboard.dismiss();
       const res = await loginAPI({ ...values, deviceLogin: 'web' });
       showToast(`Đăng nhập ${res?.message}`, 'success', 'top');
-      // router.push('feed/new');
+      router.push('feed/new');
       // await registerTokenFCM();
     } catch (e: any) {
       showToast(`${e?.message}`, 'danger', 'top');
