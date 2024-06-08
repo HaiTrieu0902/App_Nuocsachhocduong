@@ -1,6 +1,15 @@
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import React, { memo } from 'react';
-import { Image, ImageSourcePropType, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { ThemedText } from './ThemedText';
 
 export interface AppButtonProps {
@@ -48,7 +57,7 @@ const ThemedButton = ({
     >
       <View className={className}>
         {iconPosition === 'left' && iconElement}
-        <ThemedText>{text}</ThemedText>
+        <Text style={{ color: COLOR_SYSTEM.white }}>{text}</Text>
         {iconPosition === 'right' && iconElement}
       </View>
     </TouchableOpacity>

@@ -63,6 +63,7 @@ const LoginScreen = () => {
           placeholder="Nhập mật khẩu"
           control={control}
           name="password"
+          isPassword
           required
           maxLength={255}
           className={'relative mt-3 '}

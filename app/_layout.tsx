@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { Button, useColorScheme } from 'react-native';
 import '../global.css';
 import { ToastProvider } from 'react-native-toast-notifications';
+import { EROUTER } from '@/constants/enum';
 export default function _layout() {
   useKeyboard();
   const colorScheme = useColorScheme();
@@ -17,7 +18,7 @@ export default function _layout() {
     if (loaded) {
       SplashScreen.hideAsync();
       // Navigate to login after fonts are loaded
-      router.push('auth/login');
+      router.push(EROUTER.LOGIN);
     }
   }, [loaded]);
 
@@ -32,18 +33,15 @@ export default function _layout() {
           screenOptions={{
             headerShown: false,
           }}
-          initialRouteName="auth/login"
+          initialRouteName={EROUTER.LOGIN}
         >
-          <Stack.Screen
-            name="auth/login"
-            options={{
-              headerTitle: 'Home',
-            }}
-          />
-          <Stack.Screen name="auth/forgotPassword" options={{ headerTitle: 'Forgot Password' }} />
+          <Stack.Screen name={EROUTER.LOGIN} options={{ headerTitle: 'Home' }} />
+          <Stack.Screen name={EROUTER.FORGOTPASSWORD} options={{ headerTitle: 'Forgot Password' }} />
+          <Stack.Screen name={EROUTER.RESETPASSWORD} options={{ headerTitle: 'Reset Password' }} />
+          <Stack.Screen name={EROUTER.VERIFYOTP} options={{ headerTitle: 'Verify OTP' }} />
           <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
+          <Stack.Screen name={EROUTER.TABS} options={{ headerShown: false }} />
+          <Stack.Screen name={EROUTER.NOTFOUND} />
         </Stack>
       </ToastProvider>
     </ThemeProvider>
