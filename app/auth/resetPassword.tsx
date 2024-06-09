@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import React, { useCallback } from 'react';
 import { SafeAreaViewUI, SecurityIcon, ThemedButton, ThemedInput } from '@/components';
 import { ThemedView } from '@/components/ThemedView';
@@ -12,6 +12,7 @@ import { forgotPasswordAPI, senOTPAPI } from '@/services/api/auth.api';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { EROUTER } from '@/constants/enum';
 import { IForgotPassword } from '@/models/auth.model';
+import { ValidationError, ValidationSchema } from '@/utils/validation';
 
 const forgotPasswordScreen = () => {
   const router = useRouter();
@@ -39,64 +40,90 @@ const forgotPasswordScreen = () => {
 
   return (
     <SafeAreaViewUI className="px-6">
-      <NavigationGoBack
-        extra={
-          <Link href={EROUTER.LOGIN} className="mt-2">
-            <ThemedText type="link" className={'!text-primary !text-[15px] text-right !font-semibold'}>
-              Đăng nhập
-            </ThemedText>
-          </Link>
-        }
-      />
-      <ThemedView className="flex items-center mt-8">
-        <SecurityIcon />
-        <ThemedText className="text-text_color font-semibold text-[28px] mt-4 ">Đặt lại mật khẩu</ThemedText>
-      </ThemedView>
-
-      <ThemedView className="mt-6">
-        <ThemedInput
-          label="Mật khẩu"
-          placeholder="Nhập mật khẩu"
-          control={control}
-          name="password"
-          isPassword
-          required
-          maxLength={255}
-          className={'relative mt-3 '}
-          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
-          classNameStyleLabel={'text-lg text-text_color'}
-          icon={<MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />}
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <NavigationGoBack
+          extra={
+            <Link href={EROUTER.LOGIN} className="mt-2">
+              <ThemedText type="link" className={'!text-primary !text-[15px] text-right !font-semibold'}>
+                Đăng nhập
+              </ThemedText>
+            </Link>
+          }
         />
-      </ThemedView>
+        <ThemedView className="flex items-center mt-8">
+          <SecurityIcon />
+          <ThemedText className="text-text_color font-semibold text-[28px] mt-4 ">Đặt lại mật khẩu</ThemedText>
+        </ThemedView>
 
-      <ThemedView className="mt-6">
-        <ThemedInput
-          label="Nhập lại mật khẩu"
-          placeholder="Nhập lại mật khẩu"
-          control={control}
-          name="confirmPassword"
-          isPassword
-          required
-          maxLength={255}
-          className={'relative mt-3 '}
-          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
-          classNameStyleLabel={'text-lg text-text_color'}
-          icon={<MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />}
-        />
-      </ThemedView>
-
-      {/* Form */}
-      <ThemedView className={'mt-6'}>
-        <ThemedView className={'mt-8'}>
-          <ThemedButton
-            text="Xác nhận"
-            svgIcon={<AntDesign name="arrowright" size={24} color={COLOR_SYSTEM.white} />}
-            iconPosition="right"
-            className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-primary`}
-            onPress={handleSubmit(handleLogin)}
+        <ThemedView className="mt-6">
+          <ThemedInput
+            label="Mật khẩu"
+            placeholder="Nhập mật khẩu"
+            control={control}
+            name="password"
+            isPassword
+            required
+            rules={{
+              validate: (value: string) => {
+                if (value.length < 8) {
+                  return ValidationError.password.min;
+                }
+                if (value.length > 255) {
+                  return ValidationError.password.max;
+                } else if (!value.match(ValidationSchema.password)) {
+                  return ValidationError.password.pattern;
+                }
+              },
+            }}
+            maxLength={255}
+            className={'relative mt-3 '}
+            classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
+            classNameStyleLabel={'text-lg text-text_color'}
+            icon={<MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />}
           />
         </ThemedView>
-      </ThemedView>
+
+        <ThemedView className="mt-6">
+          <ThemedInput
+            label="Nhập lại mật khẩu"
+            placeholder="Nhập lại mật khẩu"
+            control={control}
+            name="confirmPassword"
+            isPassword
+            required
+            rules={{
+              validate: (value: string) => {
+                if (value.length < 8) {
+                  return ValidationError.password.min;
+                }
+                if (value.length > 255) {
+                  return ValidationError.password.max;
+                } else if (!value.match(ValidationSchema.password)) {
+                  return ValidationError.password.pattern;
+                }
+              },
+            }}
+            maxLength={255}
+            className={'relative mt-3 '}
+            classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
+            classNameStyleLabel={'text-lg text-text_color'}
+            icon={<MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />}
+          />
+        </ThemedView>
+
+        {/* Form */}
+        <ThemedView className={'mt-6'}>
+          <ThemedView className={'mt-8'}>
+            <ThemedButton
+              text="Xác nhận"
+              svgIcon={<AntDesign name="arrowright" size={24} color={COLOR_SYSTEM.white} />}
+              iconPosition="right"
+              className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-primary`}
+              onPress={handleSubmit(handleLogin)}
+            />
+          </ThemedView>
+        </ThemedView>
+      </KeyboardAvoidingView>
     </SafeAreaViewUI>
   );
 };

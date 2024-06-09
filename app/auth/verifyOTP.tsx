@@ -11,12 +11,12 @@ import useToastNotifications from '@/hooks/useToastNotifications';
 import { senOTPAPI, verifyOTPAPI } from '@/services/api/auth.api';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { EROUTER } from '@/constants/enum';
+import { ValidationError, ValidationSchema } from '@/utils/validation';
 
 const VerifyOTPScreen = () => {
   const router = useRouter();
   const { email }: any = useLocalSearchParams();
   const showToast = useToastNotifications();
-  console.log('📢 [verifyOTP.tsx:21] email', email);
 
   /** SET UP form  */
   const { control, handleSubmit, reset } = useForm<any>({
@@ -82,6 +82,12 @@ const VerifyOTPScreen = () => {
           control={control}
           name="otp"
           required
+          rules={{
+            pattern: {
+              value: ValidationSchema.otp,
+              message: ValidationError.otp,
+            },
+          }}
           maxLength={255}
           className={'relative mt-3 '}
           classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}

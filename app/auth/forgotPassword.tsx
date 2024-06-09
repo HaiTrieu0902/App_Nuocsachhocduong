@@ -11,6 +11,7 @@ import useToastNotifications from '@/hooks/useToastNotifications';
 import { senOTPAPI } from '@/services/api/auth.api';
 import { Link, useRouter } from 'expo-router';
 import { EROUTER } from '@/constants/enum';
+import { ValidationError, ValidationSchema } from '@/utils/validation';
 
 const forgotPasswordScreen = () => {
   const router = useRouter();
@@ -66,6 +67,12 @@ const forgotPasswordScreen = () => {
           control={control}
           name="email"
           required
+          rules={{
+            pattern: {
+              value: ValidationSchema.email,
+              message: ValidationError.email,
+            },
+          }}
           maxLength={255}
           className={'relative mt-3 '}
           classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
