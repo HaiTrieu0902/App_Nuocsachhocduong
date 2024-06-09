@@ -9,7 +9,6 @@ export default function _layout() {
   const segments = useSegments();
   const hide = segments.includes('[id]');
 
-  // || segments.includes("live")
   return (
     <Tabs
       initialRouteName={EROUTER.HOME}
@@ -21,10 +20,10 @@ export default function _layout() {
           marginBottom: -4,
           marginTop: -8,
         },
-        tabBarStyle: {
-          display: hide ? 'none' : 'flex',
-          backgroundColor: hide ? 'transparent' : undefined,
-        },
+        // tabBarStyle: {
+        //   display: hide ? 'none' : 'flex',
+        //   backgroundColor: hide ? 'transparent' : undefined,
+        // },
 
         headerShown: false,
       }}

@@ -1,8 +1,6 @@
 import { View, Text, Image, Platform, StyleSheet, Button } from 'react-native';
 import React from 'react';
-
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-
 import { router } from 'expo-router';
 
 const ProductScreen = () => {

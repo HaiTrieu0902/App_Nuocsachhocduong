@@ -39,8 +39,12 @@ export default function _layout() {
           <Stack.Screen name={EROUTER.FORGOTPASSWORD} options={{ headerTitle: 'Forgot Password' }} />
           <Stack.Screen name={EROUTER.RESETPASSWORD} options={{ headerTitle: 'Reset Password' }} />
           <Stack.Screen name={EROUTER.VERIFYOTP} options={{ headerTitle: 'Verify OTP' }} />
+
           <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
           <Stack.Screen name={EROUTER.TABS} options={{ headerShown: false }} />
+
+          <Stack.Screen name={EROUTER.PROFILE_INFOMATION} options={{ headerTitle: 'Profile Infomation' }} />
+
           <Stack.Screen name={EROUTER.NOTFOUND} />
         </Stack>
       </ToastProvider>

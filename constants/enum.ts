@@ -1,9 +1,9 @@
 export enum EROUTER {
   /** AUTH */
-  LOGIN = 'auth/login',
-  VERIFYOTP = 'auth/verifyOTP',
-  FORGOTPASSWORD = 'auth/forgotPassword',
-  RESETPASSWORD = 'auth/resetPassword',
+  LOGIN = 'auth/Login',
+  VERIFYOTP = 'auth/VerifyOTP',
+  FORGOTPASSWORD = 'auth/ForgotPassword',
+  RESETPASSWORD = 'auth/ResetPassword',
 
   /**  TABS*/
   TABS = '(tabs)',
@@ -13,8 +13,9 @@ export enum EROUTER {
   PRODUCT = 'product',
   MAINTENACE = 'maintenance',
   NOTIFACATION = 'notification',
-  PROFILE = 'profile',
 
+  PROFILE = 'profile',
+  PROFILE_INFOMATION = 'profile/InformationUser',
   /** No found */
   NOTFOUND = '+not-found',
 }

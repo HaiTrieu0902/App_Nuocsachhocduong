@@ -3,9 +3,11 @@ import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { EROUTER } from '@/constants/enum';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React from 'react';
-import { Image, Platform, StyleSheet } from 'react-native';
+import { Button, Image, Platform, StyleSheet } from 'react-native';
 
 const ProfileScreen = () => {
   return (
@@ -81,6 +83,7 @@ const ProfileScreen = () => {
           ),
         })}
       </Collapsible>
+      <Button onPress={() => router.push(EROUTER.PROFILE_INFOMATION)} title="Go To Infomation" />
     </ParallaxScrollView>
   );
 };
