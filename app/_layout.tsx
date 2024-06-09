@@ -18,7 +18,7 @@ export default function _layout() {
     if (loaded) {
       SplashScreen.hideAsync();
       // Navigate to login after fonts are loaded
-      router.push(EROUTER.LOGIN);
+      router.push(EROUTER?.HOME);
     }
   }, [loaded]);
 

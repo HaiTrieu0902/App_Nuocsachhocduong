@@ -2,44 +2,36 @@ import { View, Text, Button } from 'react-native';
 import React from 'react';
 import { Tabs, router } from 'expo-router';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import { COLOR_SYSTEM } from '@/constants/Colors';
+import { EROUTER } from '@/constants/enum';
 
 export default function _layout() {
   return (
     <Tabs
-      initialRouteName="feed"
+      initialRouteName={EROUTER.HOME}
       screenOptions={{
-        tabBarActiveTintColor: 'red',
+        tabBarActiveTintColor: COLOR_SYSTEM.primary,
         tabBarLabelStyle: {
           fontSize: 13,
           fontWeight: '400',
           marginBottom: 0,
           marginTop: -8,
         },
+        headerShown: false,
       }}
     >
       <Tabs.Screen
-        name="feed"
+        name={EROUTER.HOME}
         options={{
           tabBarIcon: ({ color }) => <Feather name="list" size={24} color={color} />,
-          tabBarLabel: 'Feed',
-          headerTitle: 'Feed',
-          headerRight: () => <Button onPress={() => router.push('feed/new')} title="Add Post" />,
-          headerLeft: () => (
-            <Button
-              onPress={() => {
-                /* Thực hiện chức năng lọc ở đây */
-              }}
-              title="Lọc"
-            />
-          ),
+          tabBarLabel: 'Home',
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
           tabBarIcon: ({ color }) => <AntDesign name="user" size={24} color={color} />,
-          tabBarLabel: 'Profile',
-          headerTitle: 'Profile',
         }}
       />
     </Tabs>

@@ -5,8 +5,16 @@ export enum EROUTER {
   FORGOTPASSWORD = 'auth/forgotPassword',
   RESETPASSWORD = 'auth/resetPassword',
 
-  /* TABS*/
+  /**  TABS*/
   TABS = '(tabs)',
+
+  /** SCREEN  ================================*/
+  HOME = 'home',
+  PRODUCT = 'product',
+  MAINTENACE = 'maintenance',
+  NOTIFACATION = 'notification',
+  PROFILE = 'profile',
+
   /** No found */
   NOTFOUND = '+not-found',
 }
