@@ -7,7 +7,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { HelloWave } from '@/components/HelloWave';
 import { router } from 'expo-router';
 
-const HomeScreen = () => {
+const NotificationScreen = () => {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -44,12 +44,12 @@ const HomeScreen = () => {
       <View className="flex-1 items-center justify-center">
         <Text className="text-red-800">Chán trong cái người thật! 🎉</Text>
       </View>
-      <Button onPress={() => router.push('/home/1')} title="Go To Home 1" />
+      <Button onPress={() => router.push('/notification/1')} title="Go To Home 1" />
     </ParallaxScrollView>
   );
 };
 
-export default HomeScreen;
+export default NotificationScreen;
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',

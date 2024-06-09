@@ -18,3 +18,11 @@ export enum EROUTER {
   /** No found */
   NOTFOUND = '+not-found',
 }
+
+export enum EPUSH_ROUTER {
+  HOME = '/home',
+  PRODUCT = '/product',
+  MAINTENACE = '/maintenance',
+  NOTIFACATION = '/notification',
+  PROFILE = '/profile',
+}
