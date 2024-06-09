@@ -1,103 +1,92 @@
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { AppImage, SafeAreaViewUI, ThemedButton } from '@/components';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { COLOR_SYSTEM } from '@/constants/Colors';
 import { EROUTER } from '@/constants/enum';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';
-import { Button, Image, Platform, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 const ProfileScreen = () => {
+  const isPrincipal = '';
+
+  const listSetting = React.useMemo(
+    () => [
+      {
+        name: 'Thông tin người dùng',
+        icon: <AntDesign name="user" size={24} color={COLOR_SYSTEM.primary} />,
+        routeName: EROUTER.PROFILE_INFOMATION,
+        index: 0,
+        enable: true,
+      },
+      {
+        name: 'Thay đổi mật khẩu',
+        icon: <MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />,
+        routeName: EROUTER.PROFILE_CHANGE_PASS,
+        index: 1,
+        enable: true,
+      },
+      {
+        name: 'Danh sách sản phẩm đã lắp đặt',
+        icon: <FontAwesome name="list-alt" size={24} color={COLOR_SYSTEM.primary} />,
+        routeName: EROUTER.PROFILE_LIST_ORDER,
+        index: 2,
+        enable: isPrincipal,
+      },
+      {
+        name: 'Danh sách trường phụ trách',
+        icon: <MaterialIcons name="school" size={24} color={COLOR_SYSTEM.primary} />,
+        routeName: EROUTER.PROFILE_LIST_SCHOOL,
+        index: 3,
+        enable: isPrincipal,
+      },
+    ],
+    [isPrincipal],
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
+    <SafeAreaViewUI className="px-5">
+      <ThemedView className="mt-5">
+        <ThemedText className="text-text_color_regular text-xl font-semibold text-center">Cá nhân</ThemedText>
+        <ThemedView className={'items-center'}>
+          <AppImage
+            className={'w-28 h-28 bg-primary rounded-full mt-4 object-contain'}
+            uri={'https://static1.srcdn.com/wordpress/wp-content/uploads/2023/09/gojo-satoru-1.jpg'}
+          />
+
+          <ThemedText className="text-text_color_regular text-2xl mt-2 font-bold text-center">Hai Trieu</ThemedText>
+          <ThemedText className="!text-primary text-xl font-normal mt-1 text-center">Trường THPT Đại Nghĩa</ThemedText>
+        </ThemedView>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens: <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText> sets up the tab
-          navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>custom fonts such as this one.</ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect what the user's current
-          color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses the powerful{' '}
-          <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText> library to create a waving hand
-          animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText> component provides a
-              parallax effect for the header image.
-            </ThemedText>
-          ),
+
+      <ThemedView className="mt-16 ">
+        {listSetting?.map((item) => {
+          return (
+            <TouchableOpacity onPress={() => router.push(item?.routeName)}>
+              <ThemedView className={'flex flex-row  items-center gap-4 py-4'}>
+                {item?.icon}
+                <ThemedText className="text-[16px] font-normal ">{item?.name}</ThemedText>
+              </ThemedView>
+            </TouchableOpacity>
+          );
         })}
-      </Collapsible>
-      <Button onPress={() => router.push(EROUTER.PROFILE_INFOMATION)} title="Go To Infomation" />
-    </ParallaxScrollView>
+      </ThemedView>
+
+      <ThemedButton
+        text="Vô hiệu hóa tài khoản"
+        svgIcon={<FontAwesome name="ban" size={20} color={COLOR_SYSTEM.white} />}
+        iconPosition="right"
+        className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-error_regular mt-10`}
+      />
+      <ThemedButton
+        text="Đăng Xuất"
+        svgIcon={<FontAwesome name="sign-out" size={22} color={COLOR_SYSTEM.white} />}
+        iconPosition="right"
+        className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-primary mt-6`}
+      />
+    </SafeAreaViewUI>
   );
 };
 
 export default ProfileScreen;
-const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});
