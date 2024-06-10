@@ -28,7 +28,7 @@ const AppCard = ({ lightColor, darkColor, className, mode }: AppCardProps) => {
             !w-full border`}
         >
           <AppImage
-            className={` object-contain w-28 h-28`}
+            className={` object-contain w-28 h-28 rounded-md`}
             uri={'https://static1.srcdn.com/wordpress/wp-content/uploads/2023/09/gojo-satoru-1.jpg'}
           />
           <ThemedText

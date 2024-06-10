@@ -30,3 +30,8 @@ export enum EPUSH_ROUTER {
   NOTIFACATION = '/notification',
   PROFILE = '/profile',
 }
+
+export enum ESTORAGE {
+  TOKEN = 'TOKEN',
+  USER = 'USER',
+}

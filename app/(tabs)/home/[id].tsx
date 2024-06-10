@@ -2,9 +2,8 @@ import { SafeAreaViewUI } from '@/components';
 import { ThemedView } from '@/components/ThemedView';
 import NavigationGoBack from '@/components/navigation/NavigationGoBack';
 import { createHtmlTemplate } from '@/utils/htmlTemplate';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { Button, Text, View } from 'react-native';
 import WebView from 'react-native-webview';
 
 const DetailNewsScreen = () => {
@@ -16,6 +15,7 @@ const DetailNewsScreen = () => {
       <NavigationGoBack title="Chi tiết tin tức" />
       <ThemedView style={{ flex: 1 }}>
         <WebView
+          style={{ borderRadius: 8 }}
           originWhitelist={['*']}
           source={{ html: createHtmlTemplate(content || ''), baseUrl: '' }}
           showsVerticalScrollIndicator={false}

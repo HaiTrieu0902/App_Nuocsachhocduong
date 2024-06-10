@@ -2,10 +2,11 @@ import { SafeAreaViewUI, ThemedButton, ThemedInput } from '@/components';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { COLOR_SYSTEM } from '@/constants/Colors';
-import { EROUTER } from '@/constants/enum';
+import { EROUTER, ESTORAGE } from '@/constants/enum';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { ILoginParams } from '@/models/auth.model';
 import { loginAPI } from '@/services/api/auth.api';
+import { asyncStorageService } from '@/utils/storage';
 import { ValidationError, ValidationSchema } from '@/utils/validation';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
@@ -28,7 +29,9 @@ const LoginScreen = () => {
       Keyboard.dismiss();
       const res = await loginAPI({ ...values, deviceLogin: 'web' });
       showToast(`Đăng nhập ${res?.message}`, 'success', 'top');
-      router.push('feed/new');
+      await asyncStorageService.setValue(ESTORAGE.TOKEN, res?.data?.token);
+      await asyncStorageService.setValue(ESTORAGE.USER, res?.data);
+      router.push(EROUTER.HOME);
       // await registerTokenFCM();
     } catch (e: any) {
       showToast(`${e?.message}`, 'danger', 'top');
