@@ -14,7 +14,7 @@ const ProductOrdersScreen = () => {
 
       <ThemedView className={'mt-4'}></ThemedView>
       <FlashList
-        data={['0', '1', '2', '3', '4']}
+        data={['0', '1', '2', '3', '4', '5', '6', '7']}
         renderItem={({ item, index }) => <ProductCard mode="orders" />}
         keyExtractor={keyExtractor}
         estimatedItemSize={120}

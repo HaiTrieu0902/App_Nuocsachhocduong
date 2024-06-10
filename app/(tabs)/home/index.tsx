@@ -1,89 +1,55 @@
-import { View, Text, Image, Platform, StyleSheet, Button } from 'react-native';
-import React from 'react';
-import { SafeAreaViewUI } from '@/components';
+import { AppCard, AppImage } from '@/components';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { HelloWave } from '@/components/HelloWave';
+import { ThemedView } from '@/components/ThemedView';
+import ProductCard from '@/components/profile/ProductCard';
+import { useIsFocused } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
 import { router } from 'expo-router';
+import React from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 const HomeScreen = () => {
+  const keyExtractor = React.useCallback((_: any, index: number) => String(index), []);
+  const isFocused = useIsFocused();
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}
+      headerImage={
+        <AppImage
+          className={`w-full h-72 object-contain`}
+          uri={
+            'https://nuocsachhocduong.com/wp-content/uploads/2022/03/z3232669649183_e4abece3a56919bb5c748edd18f2cd16.jpg'
+          }
+        />
+      }
     >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{' '}
-          <ThemedText type="defaultSemiBold">{Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}</ThemedText> to
-          open developer tools.
+      <ThemedView>
+        <ThemedText className="text-text_color_regular text-xl font-semibold ">
+          Giới thiệu dự án nước sạch học đường
+        </ThemedText>
+        <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
+          Dự án Nước Sạch Học Đường Việt Nam là chuỗi các hoạt động nhằm góp phần vào việc bảo vệ và nâng cao sức khoẻ
+          của học sinh, sinh viên, cán bộ và giáo viên tại các trường ...
         </ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>Tap the Explore tab to learn more about what's included in this starter app.</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-      <View className="bg-red-500">
-        <Text>Blue create</Text>
+
+      <View style={{ flex: 1 }}>
+        <FlashList
+          data={['0', '1', '2', '3', '4']}
+          renderItem={({ item, index }) => <AppCard mode="news" />}
+          keyExtractor={keyExtractor}
+          estimatedItemSize={120}
+          //   refreshing={refreshing}
+          //   onRefresh={pullToRefresh}
+          //   onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.1}
+          showsVerticalScrollIndicator={false}
+          //   ListEmptyComponent={}
+        />
       </View>
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-red-800">Chán trong cái người thật! 🎉</Text>
-      </View>
-      <Button onPress={() => router.push('/home/1')} title="Go To Home 1" />
     </ParallaxScrollView>
   );
 };
 
 export default HomeScreen;
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
-
-// import { Button, StyleSheet, Text, View } from 'react-native';
-// import React from 'react';
-// import { router, useLocalSearchParams } from 'expo-router';
-
-// const DetailNewsScreen = () => {
-//   const { id, author } = useLocalSearchParams();
-//   return (
-//     <View>
-//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//         <Text style={{ fontSize: 18 }}>Blog Post Details {id}</Text>
-//         <Text style={{ fontSize: 18 }}>Written by {author}</Text>
-//         <Button onPress={() => router.back()} title="Go Back" />
-//       </View>
-//     </View>
-//   );
-// };
-
-// export default DetailNewsScreen;
