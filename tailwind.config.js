@@ -33,6 +33,9 @@ module.exports = {
         transparent: 'transparent',
         overlay: 'rgba(0, 0, 0, 0.5)',
       },
+      boxShadow: {
+        custom: '0px 5px 15px rgba(0, 0, 0, 0.35)',
+      },
       spacing: {
         base: 12,
         md: 16,

@@ -1,6 +1,6 @@
 import { ResponsiveStyleSheet } from '@/utils/responsive';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Animated, Image, ViewStyle } from 'react-native';
+import { Animated, Image, StyleProp, ViewStyle } from 'react-native';
 
 type Props = {
   uri?: string | number;
@@ -8,9 +8,10 @@ type Props = {
   lightColor?: string;
   darkColor?: string;
   className?: string | any;
+  style?: StyleProp<ViewStyle>;
 };
 
-const AppImage = ({ uri, notAvatar, className }: Props) => {
+const AppImage = ({ uri, notAvatar, className, style }: Props) => {
   const [error, setError] = useState<boolean>(false);
   const opacity = React.useRef(new Animated.Value(0)).current; // Initial opacity set to 0
 
@@ -29,7 +30,6 @@ const AppImage = ({ uri, notAvatar, className }: Props) => {
 
   const handleError = useCallback(() => setError(true), []);
 
-  console.log('uri', uri);
   useEffect(() => {
     Animated.timing(opacity, {
       toValue: 1,
@@ -41,7 +41,7 @@ const AppImage = ({ uri, notAvatar, className }: Props) => {
   return (
     <Animated.View style={{ opacity }}>
       {/* Apply animated opacity */}
-      <Image source={src} onError={handleError} className={className} />
+      <Image style={style as never} source={src} onError={handleError} className={className} />
     </Animated.View>
   );
 };

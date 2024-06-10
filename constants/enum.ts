@@ -16,8 +16,8 @@ export enum EROUTER {
 
   PROFILE = 'profile',
   PROFILE_INFOMATION = 'profile/InformationUser',
-  PROFILE_CHANGE_PASS = 'profile/ChangePassWord',
-  PROFILE_LIST_ORDER = 'profile/ListOrder',
+  PROFILE_CHANGE_PASS = 'profile/ChangePassword',
+  PROFILE_LIST_ORDER = 'profile/ProductOrders',
   PROFILE_LIST_SCHOOL = 'profile/ListSchool',
   /** No found */
   NOTFOUND = '+not-found',

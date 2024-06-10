@@ -43,8 +43,11 @@ export default function _layout() {
           <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
           <Stack.Screen name={EROUTER.TABS} options={{ headerShown: false }} />
 
+          {/* Profile */}
           <Stack.Screen name={EROUTER.PROFILE_INFOMATION} options={{ headerTitle: 'Profile Infomation' }} />
-
+          <Stack.Screen name={EROUTER.PROFILE_CHANGE_PASS} options={{ headerTitle: 'Profile Change Password' }} />
+          <Stack.Screen name={EROUTER.PROFILE_LIST_ORDER} options={{ headerTitle: 'Profile List Orders' }} />
+          <Stack.Screen name={EROUTER.PROFILE_LIST_SCHOOL} options={{ headerTitle: 'Profile List School' }} />
           <Stack.Screen name={EROUTER.NOTFOUND} />
         </Stack>
       </ToastProvider>

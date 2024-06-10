@@ -63,7 +63,7 @@ const ProfileScreen = () => {
       <ThemedView className="mt-16 ">
         {listSetting?.map((item) => {
           return (
-            <TouchableOpacity onPress={() => router.push(item?.routeName)}>
+            <TouchableOpacity key={item?.index} onPress={() => router.push(item?.routeName)}>
               <ThemedView className={'flex flex-row  items-center gap-4 py-4'}>
                 {item?.icon}
                 <ThemedText className="text-[16px] font-normal ">{item?.name}</ThemedText>
