@@ -13,8 +13,8 @@ import { AntDesign, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Button, Text, TouchableOpacity, View } from 'react-native';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { TouchableOpacity } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 const ProfileScreen = () => {
   const isPrincipal = '';
@@ -56,9 +56,18 @@ const ProfileScreen = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
+      const { uri, type } = result.assets[0];
+      const fileInfo = await FileSystem.getInfoAsync(uri);
+      const file = {
+        uri: fileInfo.uri,
+        name: fileInfo.uri.split('/').pop(),
+        type: type,
+      };
+      const files = [file];
+
+      console.log('files', files);
+
       setImage(result.assets[0].uri);
     }
   };
