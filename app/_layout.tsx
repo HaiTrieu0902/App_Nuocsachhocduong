@@ -40,8 +40,6 @@ export default function _layout() {
     fetchTokenAndUser();
   }, []);
 
-  console.log('token', token);
-
   if (!loaded) {
     return null;
   }

@@ -6,7 +6,7 @@ type PlacementType = 'top' | 'bottom' | 'center';
 const useToastNotifications = () => {
   const toast = useToast();
 
-  const useNotifications = (message: string, type: string, placement: PlacementType) => {
+  const useNotifications = (message: string, type: 'danger' | 'success' | 'warning', placement: PlacementType) => {
     const toastStyle: ViewStyle = {
       minHeight: 50,
       height: 'auto',

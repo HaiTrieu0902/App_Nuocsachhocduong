@@ -1,13 +1,14 @@
 export interface IInforUser {
+  id?: string;
   fullName: string;
   email: string;
-  sdt: string | number;
+  phoneNumber: string | number;
 }
 
 export interface IChangePassword {
   oldPassword: string;
   newPassword: string;
-  confirmPassword: string;
+  email: string;
 }
 
 export interface IProfileDetail {
