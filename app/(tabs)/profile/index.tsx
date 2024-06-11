@@ -13,16 +13,17 @@ import { AntDesign, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
-
+import { Button, Text, TouchableOpacity, View } from 'react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 const ProfileScreen = () => {
+  const isPrincipal = '';
+  const isFocused = useIsFocused();
   const { isLoading, withLoading } = useLoading();
   const showToast = useToastNotifications();
   const [authUser, setAuthUser] = useState<any>(null);
   const [profile, setProfile] = useState<IProfileDetail>({} as IProfileDetail);
-  const [image, setImage] = useState<any>();
-  const isFocused = useIsFocused();
-  const isPrincipal = '';
+  const [image, setImage] = useState<any>(null);
 
   /** handle get profile  */
   const fetchProfileUser = async (id: string) => {
@@ -42,6 +43,24 @@ const ProfileScreen = () => {
     await asyncStorageService.removeValue(ESTORAGE.USER);
     showToast(`Đăng xuất thành công`, 'success', 'top');
     router.push(EROUTER.LOGIN);
+  };
+
+  /** handle pick Image */
+  const pickImage = async () => {
+    /** No permissions request is necessary for launching the image library */
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      // allowsMultipleSelection: true,
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   };
 
   /* Setup listSetting  */
@@ -94,17 +113,17 @@ const ProfileScreen = () => {
     fetchTokenAndUser();
   }, []);
 
-  /* testing camera */
-
   return (
     <SafeAreaViewUI className="px-5">
       <ThemedView className="mt-5">
         <ThemedText className="text-text_color_regular text-xl font-semibold text-center">Cá nhân</ThemedText>
         <ThemedView className={'items-center'}>
-          <AppImage
-            className={'w-28 h-28 bg-primary rounded-full mt-4 object-contain'}
-            uri={'https://static1.srcdn.com/wordpress/wp-content/uploads/2023/09/gojo-satoru-1.jpg'}
-          />
+          <TouchableOpacity onPress={pickImage}>
+            <AppImage
+              className={'w-28 h-28 bg-primary rounded-full border border-text_color_light mt-4 object-contain'}
+              uri={image}
+            />
+          </TouchableOpacity>
 
           <ThemedText className="text-text_color_regular text-2xl mt-2 font-bold text-center">
             {profile?.fullName ? profile?.fullName : authUser?.fullName}
@@ -147,18 +166,6 @@ const ProfileScreen = () => {
         iconPosition="right"
         className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-primary mt-6`}
       />
-
-      {/* <View className="mt-2">
-        <View>
-          <CameraView facing={facing}>
-            <View>
-              <TouchableOpacity onPress={toggleCameraFacing}>
-                <Text>Flip Camera</Text>
-              </TouchableOpacity>
-            </View>
-          </CameraView>
-        </View>
-      </View> */}
     </SafeAreaViewUI>
   );
 };

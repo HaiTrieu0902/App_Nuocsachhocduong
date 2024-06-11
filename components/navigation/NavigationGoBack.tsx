@@ -25,7 +25,7 @@ const NavigationGoBack = ({
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
   return (
     <ThemedView style={{ justifyContent: 'space-between' }} className={`${className} flex flex-row items-center`}>
-      <View className="flex flex-row w-full  items-center">
+      <View className="flex flex-row items-center">
         <TouchableOpacity onPress={() => router.back()}>
           <FontAwesome name="angle-left" size={30} color={color} />
         </TouchableOpacity>
@@ -36,7 +36,6 @@ const NavigationGoBack = ({
           {title ? title : 'Trở lại'}
         </Text>
       </View>
-      {/*  */}
       <View>{extra}</View>
     </ThemedView>
   );
