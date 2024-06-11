@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '##0E8449',
+        primary: '#0E8449',
         primary_regular: '#18DC7A',
         primary_light: '#74EAAF',
 
@@ -32,6 +32,9 @@ module.exports = {
         modal_bg: '#7f7f7f',
         transparent: 'transparent',
         overlay: 'rgba(0, 0, 0, 0.5)',
+      },
+      boxShadow: {
+        custom: '0px 5px 15px rgba(0, 0, 0, 0.35)',
       },
       spacing: {
         base: 12,

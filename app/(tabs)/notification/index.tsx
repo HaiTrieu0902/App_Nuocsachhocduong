@@ -1,11 +1,13 @@
+import { View, Text, Image, Platform, StyleSheet, Button } from 'react-native';
 import React from 'react';
-import { Image, StyleSheet, Platform, View, Text } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
+import { SafeAreaViewUI } from '@/components';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-export default function Page() {
+import { ThemedText } from '@/components/ThemedText';
+import { HelloWave } from '@/components/HelloWave';
+import { router } from 'expo-router';
+
+const NotificationScreen = () => {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -42,9 +44,12 @@ export default function Page() {
       <View className="flex-1 items-center justify-center">
         <Text className="text-red-800">Chán trong cái người thật! 🎉</Text>
       </View>
+      <Button onPress={() => router.push('/notification/1')} title="Go To Home 1" />
     </ParallaxScrollView>
   );
-}
+};
+
+export default NotificationScreen;
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
@@ -63,3 +68,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
 });
+
+// import { Button, StyleSheet, Text, View } from 'react-native';
+// import React from 'react';
+// import { router, useLocalSearchParams } from 'expo-router';
+
+// const DetailNewsScreen = () => {
+//   const { id, author } = useLocalSearchParams();
+//   return (
+//     <View>
+//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//         <Text style={{ fontSize: 18 }}>Blog Post Details {id}</Text>
+//         <Text style={{ fontSize: 18 }}>Written by {author}</Text>
+//         <Button onPress={() => router.back()} title="Go Back" />
+//       </View>
+//     </View>
+//   );
+// };
+
+// export default DetailNewsScreen;

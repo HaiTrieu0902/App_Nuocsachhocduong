@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { ThemedView } from './ThemedView';
 import { ThemedText } from './ThemedText';
+import { COLOR_SYSTEM } from '@/constants/Colors';
 
 export interface AppInputProps extends TextInputProps {
   style?: StyleProp<TextStyle>;
@@ -114,7 +115,9 @@ const ThemedInput = forwardRef(
               </View>
               {Boolean(error?.message || subBtn) && (
                 <View>
-                  {error?.message && <ThemedText>{error.message}</ThemedText>}
+                  {error?.message && (
+                    <ThemedText style={{ color: COLOR_SYSTEM.errorRegular, marginTop: 6 }}>{error.message}</ThemedText>
+                  )}
                   {subBtn}
                 </View>
               )}
