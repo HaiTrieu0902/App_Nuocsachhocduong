@@ -20,6 +20,7 @@ const ProfileScreen = () => {
   const showToast = useToastNotifications();
   const [authUser, setAuthUser] = useState<any>(null);
   const [profile, setProfile] = useState<IProfileDetail>({} as IProfileDetail);
+  const [image, setImage] = useState<any>();
   const isFocused = useIsFocused();
   const isPrincipal = '';
 
@@ -93,7 +94,7 @@ const ProfileScreen = () => {
     fetchTokenAndUser();
   }, []);
 
-  console.log('authUser', authUser);
+  /* testing camera */
 
   return (
     <SafeAreaViewUI className="px-5">
@@ -106,7 +107,7 @@ const ProfileScreen = () => {
           />
 
           <ThemedText className="text-text_color_regular text-2xl mt-2 font-bold text-center">
-            {authUser?.fullName ? authUser?.fullName : ''}
+            {profile?.fullName ? profile?.fullName : authUser?.fullName}
           </ThemedText>
           <ThemedText className="!text-primary text-xl font-normal mt-1 text-center">{'Nhân viên kỹ thuật'}</ThemedText>
         </ThemedView>
@@ -146,6 +147,18 @@ const ProfileScreen = () => {
         iconPosition="right"
         className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-primary mt-6`}
       />
+
+      {/* <View className="mt-2">
+        <View>
+          <CameraView facing={facing}>
+            <View>
+              <TouchableOpacity onPress={toggleCameraFacing}>
+                <Text>Flip Camera</Text>
+              </TouchableOpacity>
+            </View>
+          </CameraView>
+        </View>
+      </View> */}
     </SafeAreaViewUI>
   );
 };
