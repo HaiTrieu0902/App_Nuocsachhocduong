@@ -2,12 +2,10 @@ import { AppCard, AppImage } from '@/components';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import ProductCard from '@/components/profile/ProductCard';
 import { useIsFocused } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { router } from 'expo-router';
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
 
 const HomeScreen = () => {
   const keyExtractor = React.useCallback((_: any, index: number) => String(index), []);
@@ -17,7 +15,7 @@ const HomeScreen = () => {
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <AppImage
-          className={`w-full h-72 object-contain`}
+          size="background"
           uri={
             'https://nuocsachhocduong.com/wp-content/uploads/2022/03/z3232669649183_e4abece3a56919bb5c748edd18f2cd16.jpg'
           }

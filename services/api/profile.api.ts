@@ -11,6 +11,10 @@ export const updateProfileUserAPI = async (payload: IInforUser) => {
   return client.put(`user/update-user`, payload).then((res) => res?.data);
 };
 
+export const updateImageUserAPI = async (payload: { id?: string; avatar: string }) => {
+  return client.put(`user/update-user`, payload).then((res) => res?.data);
+};
+
 export const changePasswordAPI = async (payload: IChangePassword) => {
   return client.put(`user/change-password`, payload).then((res) => res?.data);
 };

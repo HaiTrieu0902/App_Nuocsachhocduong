@@ -1761,6 +1761,11 @@
   resolved "https://registry.npmjs.org/@react-native/assets-registry/-/assets-registry-0.74.83.tgz"
   integrity sha512-2vkLMVnp+YTZYTNSDIBZojSsjz8sl5PscP3j4GcV6idD8V978SZfwFlk8K0ti0BzRs11mzL0Pj17km597S/eTQ==
 
+"@react-native/assets-registry@0.74.84":
+  version "0.74.84"
+  resolved "https://registry.yarnpkg.com/@react-native/assets-registry/-/assets-registry-0.74.84.tgz#aa472f82c1b7d8a30098c8ba22fad7b3dbb5be5f"
+  integrity sha512-dzUhwyaX04QosWZ8zyaaNB/WYZIdeDN1lcpfQbqiOhZJShRH+FLTDVONE/dqlMQrP+EO7lDqF0RrlIt9lnOCQQ==
+
 "@react-native/babel-plugin-codegen@0.74.83":
   version "0.74.83"
   resolved "https://registry.npmjs.org/@react-native/babel-plugin-codegen/-/babel-plugin-codegen-0.74.83.tgz"
@@ -3922,6 +3927,13 @@ expo-image-picker@~15.0.5:
   integrity sha512-Qqp16udsadx/YpNcNaWzfbmO0tbMxyX9bS1aFiDVC+Zffh8LY8S4HJJcnWqSC2TeuAl+9SxUwTloJagvPeMBBw==
   dependencies:
     expo-image-loader "~4.7.0"
+
+expo-image@~1.12.11:
+  version "1.12.11"
+  resolved "https://registry.yarnpkg.com/expo-image/-/expo-image-1.12.11.tgz#3ec547f6eb53a481239a8683ae76b7b86b4e782c"
+  integrity sha512-YxzSqIMhgn8H4+In9EBeWR4Ph5QXUmHduJooK3FJo4047zBWkGpwlJ8fr9i4ULe3pPXds7cvXn+jtiHI0XwYtw==
+  dependencies:
+    "@react-native/assets-registry" "0.74.84"
 
 expo-keep-awake@~13.0.2:
   version "13.0.2"

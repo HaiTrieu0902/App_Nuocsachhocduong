@@ -7,7 +7,7 @@ import useLoading from '@/hooks/useLoading';
 import { getAuthUser } from '@/hooks/useStorage';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { IProfileDetail } from '@/models/profile.model';
-import { getProfileUserAPI } from '@/services/api/profile.api';
+import { getProfileUserAPI, updateImageUserAPI } from '@/services/api/profile.api';
 import { asyncStorageService } from '@/utils/storage';
 import { AntDesign, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
@@ -16,6 +16,9 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
+import { UploadImagesApi } from '@/services/api/common.api';
+import { BASE_URL } from '@/constants/urls';
+
 const ProfileScreen = () => {
   const isPrincipal = '';
   const isFocused = useIsFocused();
@@ -30,6 +33,7 @@ const ProfileScreen = () => {
     await withLoading(async () => {
       try {
         const res = await getProfileUserAPI(id);
+        console.log('res', res);
         setProfile(res?.data);
       } catch (error: any) {
         showToast(`${error?.message}`, 'danger', 'top');
@@ -46,7 +50,7 @@ const ProfileScreen = () => {
   };
 
   /** handle pick Image */
-  const pickImage = async () => {
+  const handlePickImageUser = async () => {
     /** No permissions request is necessary for launching the image library */
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -55,7 +59,6 @@ const ProfileScreen = () => {
       // allowsMultipleSelection: true,
       quality: 1,
     });
-
     if (!result.canceled) {
       const { uri, type } = result.assets[0];
       const fileInfo = await FileSystem.getInfoAsync(uri);
@@ -65,10 +68,18 @@ const ProfileScreen = () => {
         type: type,
       };
       const files = [file];
-
-      console.log('files', files);
-
-      setImage(result.assets[0].uri);
+      try {
+        const response = await UploadImagesApi(files as never);
+        const res = await updateImageUserAPI({
+          id: authUser?.id as string,
+          avatar: `common/images/${response?.data[0]?.filename}`,
+        });
+        setProfile(res?.data);
+        showToast('Cập nhật ảnh đại điện thành công', 'success', 'top');
+        setImage(result.assets[0].uri);
+      } catch (error: any) {
+        showToast(error?.message, 'success', 'top');
+      }
     }
   };
 
@@ -109,12 +120,6 @@ const ProfileScreen = () => {
 
   /** EFFECT */
   useEffect(() => {
-    if (authUser?.id && isFocused) {
-      fetchProfileUser(authUser?.id as string);
-    }
-  }, [isFocused]);
-
-  useEffect(() => {
     const fetchTokenAndUser = async () => {
       const token = await getAuthUser();
       setAuthUser(token);
@@ -122,15 +127,23 @@ const ProfileScreen = () => {
     fetchTokenAndUser();
   }, []);
 
+  useEffect(() => {
+    if (authUser?.id && isFocused) {
+      fetchProfileUser(authUser?.id as string);
+    }
+  }, [isFocused, authUser]);
+
   return (
     <SafeAreaViewUI className="px-5">
       <ThemedView className="mt-5">
         <ThemedText className="text-text_color_regular text-xl font-semibold text-center">Cá nhân</ThemedText>
         <ThemedView className={'items-center'}>
-          <TouchableOpacity onPress={pickImage}>
+          <TouchableOpacity onPress={handlePickImageUser}>
             <AppImage
-              className={'w-28 h-28 bg-primary rounded-full border border-text_color_light mt-4 object-contain'}
-              uri={image}
+              style={{ marginTop: 14, borderWidth: 1, borderColor: COLOR_SYSTEM.textColorLight }}
+              size="medium"
+              borderRadius={999}
+              uri={`${BASE_URL}${profile?.avatar}`}
             />
           </TouchableOpacity>
 
@@ -149,7 +162,10 @@ const ProfileScreen = () => {
               onPress={() =>
                 router.push({
                   pathname: item?.routeName,
-                  params: { email: authUser?.email, authUser: JSON.stringify(authUser) },
+                  params: {
+                    email: authUser?.email,
+                    authUser: profile?.id ? JSON.stringify(profile) : JSON.stringify(authUser),
+                  },
                 })
               }
             >
