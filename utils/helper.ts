@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/constants/urls';
 import { Dimensions, Platform } from 'react-native';
 
 export const isIphoneWithNotch = (): boolean => {
@@ -44,3 +45,10 @@ export const s = scale;
 export const vs = verticalScale;
 export const ms = moderateScale;
 export const mvs = moderateVerticalScale;
+
+export const updateImageUrls = (content: string) => {
+  return content.replace(/<img [^>]*src="([^"]+)"[^>]*>/g, (match, p1) => {
+    const newUrl = `${BASE_URL}${p1}`;
+    return match.replace(p1, newUrl);
+  });
+};

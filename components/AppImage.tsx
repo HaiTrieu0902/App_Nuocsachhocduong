@@ -78,7 +78,6 @@ const AppImage = ({ uri, notAvatar, className, style, size = 'medium', borderRad
       return notAvatar ? require('@/assets/images/imageDefault.png') : require('@/assets/images/imageDefault.png');
     }
     if (typeof uri === 'string') {
-      console.log('ddaay');
       return { uri };
     }
     return;
