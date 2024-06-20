@@ -29,11 +29,9 @@ const DetailNewsScreen = () => {
 
   const content = updateImageUrls(data?.content ? (data?.content as string) : '');
 
-  console.log('📢 [[id].tsx:32]', updateImageUrls(data?.content ? (data?.content as string) : ''));
-
   return (
     <SafeAreaViewUI className="px-5">
-      <NavigationGoBack title="Chi tiết tin tức" />
+      <NavigationGoBack title={`${data?.title}`} />
       <ThemedView style={{ flex: 1 }}>
         <WebView
           style={{ borderRadius: 8 }}

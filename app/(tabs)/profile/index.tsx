@@ -76,7 +76,7 @@ const ProfileScreen = () => {
         });
         setProfile(res?.data);
         showToast('Cập nhật ảnh đại điện thành công', 'success', 'top');
-        setImage(result.assets[0].uri);
+        // setImage(result.assets[0].uri);
       } catch (error: any) {
         showToast(error?.message, 'success', 'top');
       }

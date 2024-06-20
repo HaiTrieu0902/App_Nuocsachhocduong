@@ -71,18 +71,18 @@ const LoginScreen = () => {
           isPassword
           required
           maxLength={255}
-          // rules={{
-          //   validate: (value: string) => {
-          //     if (value.length < 8) {
-          //       return ValidationError.password.min;
-          //     }
-          //     if (value.length > 255) {
-          //       return ValidationError.password.max;
-          //     } else if (!value.match(ValidationSchema.password)) {
-          //       return ValidationError.password.pattern;
-          //     }
-          //   },
-          // }}
+          rules={{
+            validate: (value: string) => {
+              if (value.length < 8) {
+                return ValidationError.password.min;
+              }
+              if (value.length > 255) {
+                return ValidationError.password.max;
+              } else if (!value.match(ValidationSchema.password)) {
+                return ValidationError.password.pattern;
+              }
+            },
+          }}
           className={'relative mt-3 '}
           classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
           classNameStyleLabel={'text-lg text-text_color'}

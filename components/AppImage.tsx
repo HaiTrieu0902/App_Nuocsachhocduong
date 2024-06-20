@@ -7,7 +7,7 @@ type Props = {
   uri?: string | number;
   notAvatar?: boolean;
   lightColor?: string;
-  size?: 'large' | 'small' | 'medium' | 'normal' | 'background';
+  size?: 'large' | 'small' | 'medium' | 'normal' | 'background' | 'xxl';
   darkColor?: string;
   className?: string | any;
   style?: StyleProp<ViewStyle>;
@@ -26,6 +26,13 @@ const AppImage = ({ uri, notAvatar, className, style, size = 'medium', borderRad
         styleSize = {
           height: 250,
           width: '100%',
+        };
+        break;
+      case 'xxl':
+        styleSize = {
+          height: 180,
+          width: 180,
+          borderRadius: 120,
         };
         break;
       case 'large':

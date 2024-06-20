@@ -35,3 +35,10 @@ export enum ESTORAGE {
   TOKEN = 'TOKEN',
   USER = 'USER',
 }
+
+export enum EROLE {
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  STAFF = 'STAFF',
+  ADMIN = 'ADMIN',
+  PRINCIPAL = 'PRINCIPAL',
+}
