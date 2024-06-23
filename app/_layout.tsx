@@ -65,6 +65,7 @@ export default function _layout() {
                 <Stack.Screen name={EROUTER.PROFILE_CHANGE_PASS} options={{ headerTitle: 'Profile Change Password' }} />
                 <Stack.Screen name={EROUTER.PROFILE_LIST_ORDER} options={{ headerTitle: 'Profile List Orders' }} />
                 <Stack.Screen name={EROUTER.PROFILE_LIST_SCHOOL} options={{ headerTitle: 'Profile List School' }} />
+                <Stack.Screen name={EROUTER.DETAIL_INSTALL_RECORD} options={{ headerTitle: 'Detail Install Record' }} />
               </>
             ) : (
               <>

@@ -1,6 +1,6 @@
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { AntDesign, Feather, FontAwesome, FontAwesome6 } from '@expo/vector-icons';
+import { AntDesign, Feather, FontAwesome6 } from '@expo/vector-icons';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import '../global.css';
@@ -14,6 +14,7 @@ interface ModalFilterProps {
   lightColor?: string;
   darkColor?: string;
   isRefresh?: boolean;
+  mode?: 'filter' | 'children';
 }
 
 const ModalFilter: React.FC<ModalFilterProps> = ({
@@ -26,6 +27,7 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
   lightColor,
   darkColor,
   onSelected,
+  mode,
 }) => {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
   const [selectedFilter, setSelectedFilter] = useState(data[0]?.value);
@@ -54,32 +56,43 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
                 <AntDesign name="close" size={24} color={COLOR_SYSTEM.primary} />
               </TouchableOpacity>
             </View>
-            {data?.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}
-                  onPress={() => handleChangeFilter(item?.value)}
-                  key={index}
-                  className=""
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: item.value === selectedFilter ? COLOR_SYSTEM.primary : color,
-                      fontWeight: 400,
-                    }}
-                    className={`text-base font-normal ${item.value === selectedFilter ? 'text-primary' : ''}`}
-                  >
-                    {item.name}
-                  </Text>
-                  {item.value === selectedFilter ? (
-                    <FontAwesome6 name="circle-dot" size={28} color={COLOR_SYSTEM.primary} />
-                  ) : (
-                    <Feather name="circle" size={28} color={color} />
-                  )}
-                </TouchableOpacity>
-              );
-            })}
+            {mode === 'filter' ? (
+              <>
+                {data?.map((item, index) => {
+                  return (
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginTop: 8,
+                      }}
+                      onPress={() => handleChangeFilter(item?.value)}
+                      key={index}
+                      className=""
+                    >
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: item.value === selectedFilter ? COLOR_SYSTEM.primary : COLOR_SYSTEM.black,
+                          fontWeight: 400,
+                        }}
+                        className={`text-base font-normal ${item.value === selectedFilter ? 'text-primary' : ''}`}
+                      >
+                        {item.name}
+                      </Text>
+                      {item.value === selectedFilter ? (
+                        <FontAwesome6 name="circle-dot" size={28} color={COLOR_SYSTEM.primary} />
+                      ) : (
+                        <Feather name="circle" size={28} color={color} />
+                      )}
+                    </TouchableOpacity>
+                  );
+                })}
+              </>
+            ) : (
+              <>{children}</>
+            )}
           </View>
         </View>
       </View>

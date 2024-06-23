@@ -1,3 +1,5 @@
+import { ESTATUS } from './enum';
+
 export const styleButton = 'flex flex-row justify-center items-center rounded-md py-3 gap-2';
 export const styleInput = 'relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4';
 export const MAXIMUM_UPLOAD = 10;
@@ -48,3 +50,22 @@ export const DATA_FILTER_PRODUCT = [
   //   value: '1',
   // },
 ];
+
+export const statusMessages: any = {
+  [ESTATUS.COMPLETED]: {
+    title: 'Thiết bị đã hoàn thành lắp đặt',
+    message: 'Nếu thiết bị nhận được có vấn đề có có thể gửi yêu cầu bảo hàng sửa chữa và luôn nhé',
+  },
+  [ESTATUS.COMPLETE]: {
+    title: 'Thiết bị đang chờ xác nhận từ trường học',
+    message: 'Nếu thiết bị nhận được có vấn đề có có thể gửi yêu cầu bảo hàng sửa chữa và luôn nhé',
+  },
+  [ESTATUS.INPROGRESS_INSTALL]: {
+    title: 'Thiết bị đang được nhân viên tiến hành lắp đặt',
+    message: 'Hiện tại nhân viên kỹ thuật đã hoặc đang tiến hành lắp đặt thiết bị',
+  },
+  default: {
+    title: 'Thiết bị đang chờ lắp đặt',
+    message: 'Hệ thống sẽ xác nhận thiết bị yêu cầu lắp đặt, hãy chờ nhé',
+  },
+};

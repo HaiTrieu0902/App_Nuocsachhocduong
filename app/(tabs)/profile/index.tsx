@@ -171,7 +171,7 @@ const ProfileScreen = () => {
             >
               <ThemedView className={'flex flex-row  items-center gap-4 py-4'}>
                 {item?.icon}
-                <ThemedText className="text-[16px] font-normal ">{item?.name}</ThemedText>
+                <ThemedText className="text-base font-medium ">{item?.name}</ThemedText>
               </ThemedView>
             </TouchableOpacity>
           );

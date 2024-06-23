@@ -1,3 +1,4 @@
+import { ESTATUS } from '@/constants/enum';
 import { BASE_URL } from '@/constants/urls';
 import { Dimensions, Platform } from 'react-native';
 
@@ -51,4 +52,17 @@ export const updateImageUrls = (content: string) => {
     const newUrl = `${BASE_URL}${p1}`;
     return match.replace(p1, newUrl);
   });
+};
+
+export const getButtonText = (data: any) => {
+  switch (data?.status?.id) {
+    case ESTATUS.COMPLETED:
+      return 'Sửa chữa - Bảo dưỡng';
+    case ESTATUS.COMPLETE:
+      return 'Xác nhận đã hoàn thành';
+    case ESTATUS.INPROGRESS_INSTALL:
+      return 'Hoàn thành';
+    default:
+      return data?.isDelete === false ? 'Hủy yêu cầu' : 'Mua lại';
+  }
 };

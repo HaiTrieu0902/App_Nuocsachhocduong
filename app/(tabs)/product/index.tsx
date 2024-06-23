@@ -101,7 +101,6 @@ const ProductScreen = () => {
 
   const handleRefresh = async () => {
     Keyboard.dismiss();
-
     setRefreshing(true);
     const resetParams = {
       pageSize: DEFAULT_SIZE_PAGE,
@@ -179,6 +178,7 @@ const ProductScreen = () => {
         </ThemedView>
       </SafeAreaViewUI>
       <ModalFilter
+        mode="filter"
         isRefresh={refreshing}
         titleHeader="Lọc sản phẩm"
         data={DATA_FILTER_PRODUCT}

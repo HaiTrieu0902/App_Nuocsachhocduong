@@ -24,6 +24,7 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@shopify/flash-list": "^1.6.4",
     "axios": "^1.7.2",
+    "date-fns": "^3.6.0",
     "expo": "~51.0.9",
     "expo-camera": "~15.0.10",
     "expo-constants": "~16.0.2",
