@@ -147,10 +147,20 @@ const ProductOrdersScreen = () => {
       const token = await getAuthUser();
       setAuthUser(token);
       setActive(token?.role?.role === EROLE.PRINCIPAL ? ESTATUS.PEDING_INSTALL : ESTATUS.INPROGRESS_INSTALL);
-      setSearchParams((prev) => ({
-        ...prev,
-        statusId: token?.role?.role === EROLE.PRINCIPAL ? ESTATUS.PEDING_INSTALL : ESTATUS.INPROGRESS_INSTALL,
-      }));
+
+      if (token?.role?.role === EROLE.PRINCIPAL) {
+        setSearchParams((prev) => ({
+          ...prev,
+          accountId: token?.id,
+          statusId: token?.role?.role === EROLE.PRINCIPAL ? ESTATUS.PEDING_INSTALL : ESTATUS.INPROGRESS_INSTALL,
+        }));
+      } else {
+        setSearchParams((prev) => ({
+          ...prev,
+          staffId: token?.id,
+          statusId: token?.role?.role === EROLE.PRINCIPAL ? ESTATUS.PEDING_INSTALL : ESTATUS.INPROGRESS_INSTALL,
+        }));
+      }
     };
     fetchTokenAndUser();
   }, []);
