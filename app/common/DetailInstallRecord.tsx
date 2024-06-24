@@ -226,7 +226,8 @@ const DetailInstallRecordScreen = () => {
           }
           disabled={
             (authUser?.role?.role === EROLE.STAFF && data?.status?.id === ESTATUS.COMPLETED) ||
-            (authUser?.role?.role === EROLE.STAFF && data?.status?.id === ESTATUS.COMPLETE)
+            (authUser?.role?.role === EROLE.STAFF && data?.status?.id === ESTATUS.COMPLETE) ||
+            (authUser?.role?.role === EROLE.PRINCIPAL && data?.status?.id === ESTATUS.INPROGRESS_INSTALL)
           }
           text={getButtonText(data)}
           // svgIcon={<FontAwesome name="sign-out" size={22} color={COLOR_SYSTEM.white} />}
