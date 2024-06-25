@@ -18,6 +18,7 @@ export enum EROUTER {
   PROFILE_INFOMATION = 'profile/InformationUser',
   PROFILE_CHANGE_PASS = 'profile/ChangePassword',
   PROFILE_LIST_ORDER = 'profile/ProductOrders',
+  PROFILE_LIST_MAINTENANCE = 'profile/ListMaitenance',
   PROFILE_LIST_SCHOOL = 'profile/ListSchool',
 
   /** Common  ================================*/

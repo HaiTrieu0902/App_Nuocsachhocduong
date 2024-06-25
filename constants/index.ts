@@ -69,3 +69,26 @@ export const statusMessages: any = {
     message: 'Hệ thống sẽ xác nhận thiết bị yêu cầu lắp đặt, hãy chờ nhé',
   },
 };
+
+export const DATA_FILTER_MAINTENANCE = [
+  {
+    value: '',
+    name: 'Tất cả',
+  },
+  {
+    value: ESTATUS.PENDING,
+    name: 'Chờ xử lý',
+  },
+  {
+    value: ESTATUS.INPROGRESS,
+    name: 'Đang xử lý',
+  },
+  {
+    value: ESTATUS.COMPLETE,
+    name: 'Hoàn thành',
+  },
+  {
+    value: ESTATUS.COMPLETED,
+    name: 'Đã hoàn thành',
+  },
+];

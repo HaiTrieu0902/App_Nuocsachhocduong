@@ -1,4 +1,4 @@
-import { NotFoundItemIcon, SafeAreaViewUI } from '@/components';
+import { SafeAreaViewUI } from '@/components';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import NavigationGoBack from '@/components/navigation/NavigationGoBack';
@@ -15,7 +15,7 @@ import { FlashList } from '@shopify/flash-list';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
-const ProductOrdersScreen = () => {
+const ListMaintenance = () => {
   const isFocused = useIsFocused();
   const { isLoading, withLoading } = useLoading();
   const showToast = useToastNotifications();
@@ -103,13 +103,13 @@ const ProductOrdersScreen = () => {
   const listStatus = React.useMemo(
     () => [
       {
-        name: 'Chờ lắp đặt',
+        name: 'Chờ xử lý',
         id: ESTATUS.PEDING_INSTALL,
         index: 0,
-        enable: authUser?.role?.role === EROLE.PRINCIPAL ? true : false,
+        enable: true,
       },
       {
-        name: 'Đang lắp đặt',
+        name: 'Đang xử lý',
         id: ESTATUS.INPROGRESS_INSTALL,
         index: 1,
         enable: true,
@@ -167,7 +167,7 @@ const ProductOrdersScreen = () => {
 
   return (
     <SafeAreaViewUI className="px-6 !w-full">
-      <NavigationGoBack title="Danh sách các thiết bị đầu tư" titleAlight />
+      <NavigationGoBack title="Danh sách sửa chữa - bảo dưỡng" titleAlight />
 
       <ThemedView className={'mb-2 mt-2'}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -189,28 +189,21 @@ const ProductOrdersScreen = () => {
         </ScrollView>
       </ThemedView>
 
-      {listInstallRecord?.length > 0 ? (
-        <FlashList
-          data={(listInstallRecord as never) || []}
-          renderItem={({ item, index }) => <ProductCard mode="orders" data={item} />}
-          keyExtractor={keyExtractor}
-          estimatedItemSize={120}
-          //   refreshing={refreshing}
-          //   onRefresh={pullToRefresh}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.1}
-          showsVerticalScrollIndicator={false}
-          ListFooterComponent={isLoadingMore ? <ActivityIndicator /> : null}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-        />
-      ) : (
-        <ThemedView className={'flex items-center'}>
-          <NotFoundItemIcon />
-          <ThemedText className={'text-lg'}>Danh sách thiết bị trống</ThemedText>
-        </ThemedView>
-      )}
+      <FlashList
+        data={(listInstallRecord as never) || []}
+        renderItem={({ item, index }) => <ProductCard mode="orders" data={item} />}
+        keyExtractor={keyExtractor}
+        estimatedItemSize={120}
+        //   refreshing={refreshing}
+        //   onRefresh={pullToRefresh}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={isLoadingMore ? <ActivityIndicator /> : null}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+      />
     </SafeAreaViewUI>
   );
 };
 
-export default ProductOrdersScreen;
+export default ListMaintenance;

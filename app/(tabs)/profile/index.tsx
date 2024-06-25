@@ -108,10 +108,17 @@ const ProfileScreen = () => {
         enable: isPrincipal,
       },
       {
+        name: 'Danh sách sửa chữa - bảo dưỡng',
+        icon: <FontAwesome name="gears" size={24} color={COLOR_SYSTEM.primary} />,
+        routeName: EROUTER.PROFILE_LIST_MAINTENANCE,
+        index: 3,
+        enable: isPrincipal,
+      },
+      {
         name: 'Danh sách trường phụ trách',
         icon: <MaterialIcons name="school" size={24} color={COLOR_SYSTEM.primary} />,
         routeName: EROUTER.PROFILE_LIST_SCHOOL,
-        index: 3,
+        index: 4,
         enable: isPrincipal,
       },
     ],
