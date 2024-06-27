@@ -1,36 +1,24 @@
-import {
-  View,
-  Text,
-  Image,
-  Platform,
-  StyleSheet,
-  Button,
-  TouchableOpacity,
-  Keyboard,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
 import { AppImage, ModalFilter, NotFoundItemIcon, SafeAreaViewUI, ThemedInput } from '@/components';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { HelloWave } from '@/components/HelloWave';
-import { router } from 'expo-router';
-import { useForm } from 'react-hook-form';
-import useToastNotifications from '@/hooks/useToastNotifications';
-import { COLOR_SYSTEM } from '@/constants/Colors';
-import { AntDesign, Octicons } from '@expo/vector-icons';
-import { useThemeColor } from '@/hooks/useThemeColor';
-import useModal from '@/hooks/useModal';
+import { ThemedView } from '@/components/ThemedView';
 import { DATA_FILTER_MAINTENANCE, DEFAULT_PAGE_NUMBER, DEFAULT_SIZE_PAGE } from '@/constants';
-import { IGetListParamMaintenance, IMaintenance } from '@/models/maintenance.model';
-import { useIsFocused } from '@react-navigation/native';
+import { COLOR_SYSTEM } from '@/constants/Colors';
+import { EROUTER, ESTATUS } from '@/constants/enum';
+import { BASE_URL } from '@/constants/urls';
 import useLoading from '@/hooks/useLoading';
+import useModal from '@/hooks/useModal';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import useToastNotifications from '@/hooks/useToastNotifications';
+import { IGetListParamMaintenance, IMaintenance } from '@/models/maintenance.model';
 import { getListMaintenanceAPI } from '@/services/api/maintenance.api';
+import { AntDesign, Octicons } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { format } from 'date-fns';
-import { ESTATUS } from '@/constants/enum';
+import { router } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ActivityIndicator, Keyboard, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 
 const MaintainanceScreen = () => {
   const showToast = useToastNotifications();
@@ -139,7 +127,7 @@ const MaintainanceScreen = () => {
     if (isFocused) {
       handleGetListMaintenance(searchParams, false);
     }
-  }, []);
+  }, [isFocused]);
 
   const renderItemPost = useCallback(({ item, index }: { item: IMaintenance; index: number }) => {
     return (
@@ -150,19 +138,23 @@ const MaintainanceScreen = () => {
             styleSheet,
             {
               borderLeftColor:
-                item?.status.id === ESTATUS.PENDING
+                item?.status?.id === ESTATUS.PENDING
                   ? COLOR_SYSTEM.errorRegular
-                  : item?.status.id === ESTATUS.INPROGRESS
+                  : item?.status?.id === ESTATUS.INPROGRESS
                   ? COLOR_SYSTEM.informationRegular
                   : COLOR_SYSTEM.primary,
             },
           ]}
         >
           <View className="flex flex-row items-center gap-2">
-            <AppImage uri={''} size="small" className={''} />
+            <AppImage
+              //borderRadius={999} uri={`${BASE_URL}${item?.account?.avatar}`}
+              size="small"
+              className={''}
+            />
             <View>
-              <ThemedText className="text-lg font-semibold">{item.school.name}</ThemedText>
-              <ThemedText className="text-sm font-light">{item.account.fullName}</ThemedText>
+              <ThemedText className="text-lg font-semibold">{item.school?.name}</ThemedText>
+              <ThemedText className="text-sm font-light">{item.account?.fullName}</ThemedText>
             </View>
           </View>
           <ThemedView className="border-t border-b border-text_color_light py-3 mt-2">
@@ -181,22 +173,22 @@ const MaintainanceScreen = () => {
             </ThemedText>
             <Text
               className={`text-right px-2 py-2 border  ${
-                item?.status.id === ESTATUS.PENDING
+                item?.status?.id === ESTATUS.PENDING
                   ? 'border-error_regular'
-                  : item?.status.id === ESTATUS.INPROGRESS
+                  : item?.status?.id === ESTATUS.INPROGRESS
                   ? 'border-infomation_regular'
                   : 'border-primary'
               }  rounded-[16px]`}
               style={{
                 color:
-                  item?.status.id === ESTATUS.PENDING
+                  item?.status?.id === ESTATUS.PENDING
                     ? COLOR_SYSTEM.errorRegular
-                    : item?.status.id === ESTATUS.INPROGRESS
+                    : item?.status?.id === ESTATUS.INPROGRESS
                     ? COLOR_SYSTEM.informationRegular
                     : COLOR_SYSTEM.primary,
               }}
             >
-              {item?.status.name}
+              {item?.status?.name}
             </Text>
           </View>
         </ThemedView>
@@ -236,7 +228,11 @@ const MaintainanceScreen = () => {
               color={COLOR_SYSTEM.primary}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              router.push(EROUTER.MAINTENACE_CREATE_REQUEST);
+            }}
+          >
             <AntDesign name="plus" className="mt-3" size={26} color={COLOR_SYSTEM.primary} />
           </TouchableOpacity>
         </View>

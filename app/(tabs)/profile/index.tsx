@@ -3,21 +3,21 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import { EROUTER, ESTORAGE } from '@/constants/enum';
+import { BASE_URL } from '@/constants/urls';
 import useLoading from '@/hooks/useLoading';
 import { getAuthUser } from '@/hooks/useStorage';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { IProfileDetail } from '@/models/profile.model';
+import { UploadImagesApi } from '@/services/api/common.api';
 import { getProfileUserAPI, updateImageUserAPI } from '@/services/api/profile.api';
 import { asyncStorageService } from '@/utils/storage';
 import { AntDesign, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import * as ImagePicker from 'expo-image-picker';
-import { UploadImagesApi } from '@/services/api/common.api';
-import { BASE_URL } from '@/constants/urls';
 
 const ProfileScreen = () => {
   const isPrincipal = '';

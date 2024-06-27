@@ -19,17 +19,18 @@ export interface IMaintenance {
   // get list
   createdAt?: Date | any;
   updatedAt?: Date | any;
-  categoryMaintenance: CategoryMaintenance;
-  installRecord: InstallRecord;
-  school: School;
-  account: Account;
-  staff: Account;
-  status: CategoryMaintenance;
+  categoryMaintenance?: CategoryMaintenance;
+  installRecord?: InstallRecord;
+  school?: School;
+  account?: Account;
+  staff?: Account;
+  status?: CategoryMaintenance;
 }
 
 export interface Account {
   id: string;
   fullName: string;
+  avatar: string;
 }
 
 export interface CategoryMaintenance {

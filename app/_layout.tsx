@@ -60,13 +60,16 @@ export default function _layout() {
                 <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
                 <Stack.Screen name={EROUTER.TABS} options={{ headerShown: false }} />
 
-                {/* Profile */}
-                <Stack.Screen name={EROUTER.PROFILE_INFOMATION} options={{ headerTitle: 'Profile Infomation' }} />
-                <Stack.Screen name={EROUTER.PROFILE_CHANGE_PASS} options={{ headerTitle: 'Profile Change Password' }} />
-                <Stack.Screen name={EROUTER.PROFILE_LIST_ORDER} options={{ headerTitle: 'Profile List Orders' }} />
-                <Stack.Screen name={EROUTER.PROFILE_LIST_MAINTENANCE} options={{ headerTitle: 'List Maintenance' }} />
-                <Stack.Screen name={EROUTER.PROFILE_LIST_SCHOOL} options={{ headerTitle: 'Profile List School' }} />
-                <Stack.Screen name={EROUTER.DETAIL_INSTALL_RECORD} options={{ headerTitle: 'Detail Install Record' }} />
+                <Stack.Screen name={EROUTER.PROFILE_INFOMATION} />
+                <Stack.Screen name={EROUTER.PROFILE_CHANGE_PASS} />
+                <Stack.Screen name={EROUTER.PROFILE_LIST_ORDER} />
+                <Stack.Screen name={EROUTER.PROFILE_LIST_MAINTENANCE} />
+                <Stack.Screen name={EROUTER.PROFILE_LIST_SCHOOL} />
+
+                <Stack.Screen name={EROUTER.MAINTENACE_CREATE_REQUEST} />
+                <Stack.Screen name={EROUTER.MAINTENACE_DETAIL} />
+
+                <Stack.Screen name={EROUTER.DETAIL_INSTALL_RECORD} />
               </>
             ) : (
               <>

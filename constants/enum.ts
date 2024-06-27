@@ -11,8 +11,11 @@ export enum EROUTER {
   /** SCREEN  ================================*/
   HOME = 'home',
   PRODUCT = 'product',
-  MAINTENACE = 'maintenance',
   NOTIFACATION = 'notification',
+
+  MAINTENACE = 'maintenance',
+  MAINTENACE_CREATE_REQUEST = 'maintenance/CreateRequest',
+  MAINTENACE_DETAIL = 'maintenance/DetailMaintenance',
 
   PROFILE = 'profile',
   PROFILE_INFOMATION = 'profile/InformationUser',
@@ -35,6 +38,8 @@ export enum EPUSH_ROUTER {
   NOTIFACATION = '/notification',
   PROFILE = '/profile',
   DETAIL_INSTALL_RECORD = '/common/DetailInstallRecord',
+  MAINTENACE_CREATE_REQUEST = '/maintenance/CreateOrSolution',
+  MAINTENACE_DETAIL = '/maintenance/DetailMaintenance',
 }
 
 export enum ESTORAGE {
@@ -57,4 +62,9 @@ export enum ESTATUS {
   PEDING_INSTALL = '9dca126d-1c83-45bc-a00c-6139bd8a8f6e',
   INPROGRESS_INSTALL = 'ea340138-fb2e-42d3-a312-6ce97a6d766a',
   DELETED = '6b06e733-c205-4c89-b5b3-c3bb9131575a',
+}
+
+export enum EMAINTENANCE {
+  BD = '8b746035-46bf-428f-b4db-b84e9b375b5f',
+  SC = 'd1e6d70f-bd4a-4acb-99bc-8801dab712cf',
 }
