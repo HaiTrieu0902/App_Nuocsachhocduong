@@ -2,7 +2,7 @@ import { AppImage, SafeAreaViewUI, ThemedButton } from '@/components';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { COLOR_SYSTEM } from '@/constants/Colors';
-import { EROUTER, ESTORAGE } from '@/constants/enum';
+import { EROLE, EROUTER, ESTORAGE } from '@/constants/enum';
 import { BASE_URL } from '@/constants/urls';
 import useLoading from '@/hooks/useLoading';
 import { getAuthUser } from '@/hooks/useStorage';
@@ -140,6 +140,7 @@ const ProfileScreen = () => {
     }
   }, [isFocused, authUser]);
 
+  console.log('profile?.schools[0]?.name', profile?.schools[0]?.name);
   return (
     <SafeAreaViewUI className="px-5">
       <ThemedView className="mt-5">
@@ -157,7 +158,9 @@ const ProfileScreen = () => {
           <ThemedText className="text-text_color_regular text-2xl mt-2 font-bold text-center">
             {profile?.fullName ? profile?.fullName : authUser?.fullName}
           </ThemedText>
-          <ThemedText className="!text-primary text-xl font-normal mt-1 text-center">{'Nhân viên kỹ thuật'}</ThemedText>
+          <ThemedText className="!text-primary text-xl font-normal mt-1 text-center">{`${
+            authUser?.role?.role === EROLE.PRINCIPAL ? profile?.schools[0]?.name || 'Hiệu trưởng' : 'Nhân viên kỹ thuật'
+          } `}</ThemedText>
         </ThemedView>
       </ThemedView>
 
