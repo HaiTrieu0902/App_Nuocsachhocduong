@@ -3,10 +3,11 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { DATA_FILTER_MAINTENANCE, DEFAULT_PAGE_NUMBER, DEFAULT_SIZE_PAGE } from '@/constants';
 import { COLOR_SYSTEM } from '@/constants/Colors';
-import { EROUTER, ESTATUS } from '@/constants/enum';
+import { EPUSH_ROUTER, EROLE, EROUTER, ESTATUS } from '@/constants/enum';
 import { BASE_URL } from '@/constants/urls';
 import useLoading from '@/hooks/useLoading';
 import useModal from '@/hooks/useModal';
+import { getAuthUser } from '@/hooks/useStorage';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { IGetListParamMaintenance, IMaintenance } from '@/models/maintenance.model';
@@ -23,6 +24,7 @@ import { ActivityIndicator, Keyboard, RefreshControl, Text, TouchableOpacity, Vi
 const MaintainanceScreen = () => {
   const showToast = useToastNotifications();
   const color = useThemeColor({}, 'text');
+  const [authUser, setAuthUser] = useState<any>(null);
   const isFocused = useIsFocused();
   const { isLoading, withLoading } = useLoading();
   const [listMaintenance, setListMaintenance] = useState<IMaintenance[]>([]);
@@ -127,11 +129,16 @@ const MaintainanceScreen = () => {
     if (isFocused) {
       handleGetListMaintenance(searchParams, false);
     }
-  }, [isFocused]);
+  }, [isFocused, searchParams]);
 
   const renderItemPost = useCallback(({ item, index }: { item: IMaintenance; index: number }) => {
     return (
-      <TouchableOpacity key={index}>
+      <TouchableOpacity
+        key={index}
+        onPress={() => {
+          router.push({ pathname: EPUSH_ROUTER.MAINTENACE_DETAIL, params: { id: item?.id } });
+        }}
+      >
         <ThemedView
           className="rounded-xl p-4 border-l-[8px] border !border-text_color_light mt-4"
           style={[
@@ -147,18 +154,19 @@ const MaintainanceScreen = () => {
           ]}
         >
           <View className="flex flex-row items-center gap-2">
-            <AppImage
-              //borderRadius={999} uri={`${BASE_URL}${item?.account?.avatar}`}
-              size="small"
-              className={''}
-            />
+            <AppImage borderRadius={999} uri={`${BASE_URL}${item?.account?.avatar}`} size="small" className={''} />
             <View>
               <ThemedText className="text-lg font-semibold">{item.school?.name}</ThemedText>
               <ThemedText className="text-sm font-light">{item.account?.fullName}</ThemedText>
             </View>
           </View>
           <ThemedView className="border-t border-b border-text_color_light py-3 mt-2">
-            <ThemedText className="text-[16px] ">{item.title}</ThemedText>
+            <ThemedText className="text-[16px] ">
+              {item.title}{' '}
+              <ThemedText className={'font-semibold !text-infomation_regular'}>
+                ({item?.categoryMaintenance?.name})
+              </ThemedText>
+            </ThemedText>
           </ThemedView>
           <ThemedText className="mt-3 text-base">Hiện trạng:</ThemedText>
           <ThemedText numberOfLines={2} className="!text-text_color_regular text-base mt-1">
@@ -194,6 +202,26 @@ const MaintainanceScreen = () => {
         </ThemedView>
       </TouchableOpacity>
     );
+  }, []);
+
+  useEffect(() => {
+    const fetchTokenAndUser = async () => {
+      const token = await getAuthUser();
+      setAuthUser(token);
+      console.log('token', token);
+      if (token?.role?.role === EROLE.PRINCIPAL) {
+        setSearchParams((prev) => ({
+          ...prev,
+          schoolId: token?.schoolIds[0],
+        }));
+      } else {
+        setSearchParams((prev) => ({
+          ...prev,
+          staffId: token?.id,
+        }));
+      }
+    };
+    fetchTokenAndUser();
   }, []);
 
   return (

@@ -67,6 +67,7 @@ export default function _layout() {
                 <Stack.Screen name={EROUTER.PROFILE_LIST_SCHOOL} />
 
                 <Stack.Screen name={EROUTER.MAINTENACE_CREATE_REQUEST} />
+                <Stack.Screen name={EROUTER.MAINTENACE_CREATE_SOLUTION} />
                 <Stack.Screen name={EROUTER.MAINTENACE_DETAIL} />
 
                 <Stack.Screen name={EROUTER.DETAIL_INSTALL_RECORD} />

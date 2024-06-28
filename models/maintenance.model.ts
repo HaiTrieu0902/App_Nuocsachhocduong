@@ -11,6 +11,8 @@ export interface IMaintenance {
   title: string;
   reason: string;
   repairFees?: number;
+  reasonRepair?: string;
+  solution?: string;
   timeMaintenance?: Date;
   images_request: any[];
   images_response?: any[];
@@ -25,6 +27,16 @@ export interface IMaintenance {
   account?: Account;
   staff?: Account;
   status?: CategoryMaintenance;
+}
+
+export interface IUpdateMaintenance {
+  id?: string;
+  repairFees: number;
+  timeMaintenance: Date | any;
+  images_response: any[];
+  reasonRepair: string;
+  solution: string;
+  statusId: string;
 }
 
 export interface Account {

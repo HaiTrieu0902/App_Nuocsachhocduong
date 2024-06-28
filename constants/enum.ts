@@ -15,6 +15,7 @@ export enum EROUTER {
 
   MAINTENACE = 'maintenance',
   MAINTENACE_CREATE_REQUEST = 'maintenance/CreateRequest',
+  MAINTENACE_CREATE_SOLUTION = 'maintenance/CreateSolution',
   MAINTENACE_DETAIL = 'maintenance/DetailMaintenance',
 
   PROFILE = 'profile',
@@ -38,7 +39,8 @@ export enum EPUSH_ROUTER {
   NOTIFACATION = '/notification',
   PROFILE = '/profile',
   DETAIL_INSTALL_RECORD = '/common/DetailInstallRecord',
-  MAINTENACE_CREATE_REQUEST = '/maintenance/CreateOrSolution',
+  MAINTENACE_CREATE_REQUEST = '/maintenance/CreateRequest',
+  MAINTENACE_CREATE_SOLUTION = '/maintenance/CreateSolution',
   MAINTENACE_DETAIL = '/maintenance/DetailMaintenance',
 }
 

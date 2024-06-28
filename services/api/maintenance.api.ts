@@ -1,4 +1,9 @@
-import { IGetListParamMaintenance, IMaintenance, IStatusMaintenance } from '@/models/maintenance.model';
+import {
+  IGetListParamMaintenance,
+  IMaintenance,
+  IStatusMaintenance,
+  IUpdateMaintenance,
+} from '@/models/maintenance.model';
 import { AxiosResponse } from 'axios';
 import client from '..';
 
@@ -12,6 +17,10 @@ export const getDetailMaintenanceAPI = (id: string) => {
 
 export const createMaintenanceAPI = (params: IMaintenance) => {
   return client.post('maintenance/create-maintenance', params).then((res: AxiosResponse) => res.data);
+};
+
+export const updateMaitenanceAPI = (params: IUpdateMaintenance) => {
+  return client.put('maintenance/update-maintenance', params).then((res: AxiosResponse) => res.data);
 };
 
 export const updateStatusMaintenanceAPI = (params: IStatusMaintenance) => {

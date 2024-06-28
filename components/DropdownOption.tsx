@@ -1,4 +1,5 @@
 import { COLOR_SYSTEM } from '@/constants/Colors';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -10,11 +11,23 @@ type DropdownOptionProps = {
   placeholder?: string;
   styleChildren?: object;
   valueItem?: any;
+  lightColor?: string;
+  darkColor?: string;
 };
 
-const DropdownOption = ({ style, onSelected, data, placeholder, styleChildren, valueItem }: DropdownOptionProps) => {
+const DropdownOption = ({
+  style,
+  onSelected,
+  data,
+  placeholder,
+  styleChildren,
+  valueItem,
+  lightColor,
+  darkColor,
+}: DropdownOptionProps) => {
   const [value, setValue] = useState(valueItem);
   const [isFocus, setIsFocus] = useState(false);
+  const background = useThemeColor({}, 'background');
 
   /* Handle changed filter*/
   const handleChangeValue = (newFilter: number | string) => {
@@ -30,6 +43,7 @@ const DropdownOption = ({ style, onSelected, data, placeholder, styleChildren, v
       borderColor: COLOR_SYSTEM.overlay,
       borderWidth: 1,
       borderRadius: 8,
+      backgroundColor: background,
       paddingHorizontal: 8,
       ...styleChildren,
     },
@@ -43,6 +57,7 @@ const DropdownOption = ({ style, onSelected, data, placeholder, styleChildren, v
       top: 8,
       zIndex: 999,
       paddingHorizontal: 8,
+      borderRadius: 12,
       fontSize: 14,
     },
     placeholderStyle: {

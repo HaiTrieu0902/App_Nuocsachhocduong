@@ -81,7 +81,6 @@ const AppImage = ({ uri, notAvatar, className, style, size = 'medium', borderRad
 
   const src = React.useMemo(() => {
     if (!uri) {
-      console.log('vao urrri');
       return notAvatar ? require('@/assets/images/imageDefault.png') : require('@/assets/images/imageDefault.png');
     }
     if (typeof uri === 'string') {
