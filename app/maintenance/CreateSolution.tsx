@@ -60,7 +60,7 @@ const CreateSolutionScreen = () => {
         }
       });
     },
-    [listInstallRecord, installRecord],
+    [listInstallRecord, installRecord, images],
   );
 
   const handleRemoveImage = useCallback((image: any) => {

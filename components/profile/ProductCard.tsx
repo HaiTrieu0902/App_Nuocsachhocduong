@@ -20,27 +20,34 @@ type ProductCardProps = {
 const ProductCard = ({ lightColor, darkColor, className, mode, data }: ProductCardProps) => {
   const router = useRouter();
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-
   return (
     <ThemedView className={`${className}  mt-4`}>
       <TouchableOpacity
-        onPress={() => router.push({ pathname: `${EPUSH_ROUTER.DETAIL_INSTALL_RECORD}`, params: { id: data?.id } })}
+        onPress={() => {
+          if (mode === 'orders') {
+            router.push({ pathname: `${EPUSH_ROUTER.DETAIL_INSTALL_RECORD}`, params: { id: data?.id } });
+          } else {
+            return;
+          }
+        }}
       >
         <View
           style={styleSheet}
           className={`flex flex-row gap-4 items-center !shadow-2xl rounded-[12px] !w-full border`}
         >
-          <AppImage
-            style={
-              {
-                borderRadius: mode === 'orders' ? 10 : '100%',
-                height: mode === 'orders' ? 112 : 60,
-                width: mode === 'orders' ? 112 : 60,
-              } as never
-            }
-            className={` object-contain ${mode === 'orders' ? 'w-28 h-28' : ''}`}
-            uri={`${BASE_URL}${data?.product?.images[0]}`}
-          />
+          {mode === 'orders' && (
+            <AppImage
+              style={
+                {
+                  borderRadius: mode === 'orders' ? 10 : '100%',
+                  height: mode === 'orders' ? 112 : 60,
+                  width: mode === 'orders' ? 112 : 60,
+                } as never
+              }
+              className={` object-contain ${mode === 'orders' ? 'w-28 h-28' : ''}`}
+              uri={`${BASE_URL}${data?.product?.images[0]}`}
+            />
+          )}
 
           {mode === 'orders' ? (
             <View style={{ width: '66%' }}>
@@ -76,13 +83,20 @@ const ProductCard = ({ lightColor, darkColor, className, mode, data }: ProductCa
               </View>
             </View>
           ) : (
-            <View>
-              <ThemedText className="text-text_color_regular text-xl font-semibold text-center">
-                Trường trung h ọc cơ sở cầu diễm
+            <View className="pl-4 w-[100%]">
+              <ThemedText className="text-text_color_regular text-xl font-semibold">{data?.name || ''}</ThemedText>
+              <ThemedText
+                numberOfLines={2}
+                className="text-text_color_regular text-xl"
+                style={{ fontWeight: 300, fontSize: 14 }}
+              >
+                Địa chỉ: {data?.address || ''}
               </ThemedText>
-
               <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
-                Phú diễm, Quận Bắc Từ Liêm, Hà Nội
+                Email: {data?.email || ''}
+              </ThemedText>
+              <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
+                SĐT: {data?.phoneNumber || ''}
               </ThemedText>
             </View>
           )}

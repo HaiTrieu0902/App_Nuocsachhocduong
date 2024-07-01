@@ -41,6 +41,12 @@ const CreateRequestScreen = () => {
       await withLoading(async () => {
         try {
           Keyboard.dismiss();
+          // const files = images.map((image) => ({
+          //   uri: image.uri,
+          //   type: 'image/jpeg', // Ensure the correct mime type
+          //   name: image.name || `image_${Date.now()}.jpg`,
+          // }));
+
           const resImages = await UploadImagesApi(images as never);
           const urls = resImages?.data?.map((item: any) => `common/images/${item?.filename}`);
           const params = {
@@ -53,6 +59,7 @@ const CreateRequestScreen = () => {
             reason: values?.reason,
             images_request: urls || [],
           };
+
           await createMaintenanceAPI(params as never);
           showToast(`Tạo sự cố thành công`, 'success', 'top');
           router.back();
@@ -62,7 +69,7 @@ const CreateRequestScreen = () => {
         }
       });
     },
-    [listInstallRecord, installRecord],
+    [listInstallRecord, installRecord, images],
   );
 
   const handleSelected = (value: string | number) => {

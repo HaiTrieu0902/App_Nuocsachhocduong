@@ -105,24 +105,24 @@ const ProfileScreen = () => {
         icon: <FontAwesome name="list-alt" size={24} color={COLOR_SYSTEM.primary} />,
         routeName: EROUTER.PROFILE_LIST_ORDER,
         index: 2,
-        enable: isPrincipal,
+        enable: true,
       },
       {
-        name: 'Danh sách sửa chữa - bảo dưỡng',
+        name: 'Danh sách thiết bị đã sửa chữa',
         icon: <FontAwesome name="gears" size={24} color={COLOR_SYSTEM.primary} />,
         routeName: EROUTER.PROFILE_LIST_MAINTENANCE,
         index: 3,
-        enable: isPrincipal,
+        enable: authUser?.role?.role === EROLE.STAFF ? false : true,
       },
       {
         name: 'Danh sách trường phụ trách',
         icon: <MaterialIcons name="school" size={24} color={COLOR_SYSTEM.primary} />,
         routeName: EROUTER.PROFILE_LIST_SCHOOL,
         index: 4,
-        enable: isPrincipal,
+        enable: authUser?.role?.role === EROLE.STAFF ? true : false,
       },
     ],
-    [isPrincipal],
+    [authUser],
   );
 
   /** EFFECT */
@@ -140,7 +140,6 @@ const ProfileScreen = () => {
     }
   }, [isFocused, authUser]);
 
-  console.log('profile?.schools[0]?.name', profile?.schools[0]?.name);
   return (
     <SafeAreaViewUI className="px-5">
       <ThemedView className="mt-5">
@@ -159,33 +158,40 @@ const ProfileScreen = () => {
             {profile?.fullName ? profile?.fullName : authUser?.fullName}
           </ThemedText>
           <ThemedText className="!text-primary text-xl font-normal mt-1 text-center">{`${
-            authUser?.role?.role === EROLE.PRINCIPAL ? profile?.schools[0]?.name || 'Hiệu trưởng' : 'Nhân viên kỹ thuật'
+            authUser?.role?.role === EROLE.PRINCIPAL
+              ? profile?.schools?.length > 0
+                ? profile?.schools[0]?.name
+                : 'Hiệu trưởng'
+              : 'Nhân viên kỹ thuật'
           } `}</ThemedText>
         </ThemedView>
       </ThemedView>
 
       <ThemedView className="mt-16 ">
-        {listSetting?.map((item) => {
-          return (
-            <TouchableOpacity
-              key={item?.index}
-              onPress={() =>
-                router.push({
-                  pathname: item?.routeName,
-                  params: {
-                    email: authUser?.email,
-                    authUser: profile?.id ? JSON.stringify(profile) : JSON.stringify(authUser),
-                  },
-                })
-              }
-            >
-              <ThemedView className={'flex flex-row  items-center gap-4 py-4'}>
-                {item?.icon}
-                <ThemedText className="text-base font-medium ">{item?.name}</ThemedText>
-              </ThemedView>
-            </TouchableOpacity>
-          );
-        })}
+        {listSetting
+          ?.filter((item) => item?.enable)
+          ?.map((item) => {
+            return (
+              <TouchableOpacity
+                key={item?.index}
+                onPress={() =>
+                  router.push({
+                    pathname: item?.routeName,
+                    params: {
+                      email: authUser?.email,
+                      authUser: profile?.id ? JSON.stringify(profile) : JSON.stringify(authUser),
+                      schools: profile?.id ? JSON.stringify(profile?.schools) : [],
+                    },
+                  })
+                }
+              >
+                <ThemedView className={'flex flex-row  items-center gap-4 py-4'}>
+                  {item?.icon}
+                  <ThemedText className="text-base font-medium ">{item?.name}</ThemedText>
+                </ThemedView>
+              </TouchableOpacity>
+            );
+          })}
       </ThemedView>
 
       <ThemedButton
