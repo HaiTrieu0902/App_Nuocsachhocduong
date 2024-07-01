@@ -1,17 +1,17 @@
-import { Keyboard, StyleSheet, Text, View } from 'react-native';
-import React, { useCallback } from 'react';
 import { SafeAreaViewUI, ThemedButton, ThemedInput } from '@/components';
-import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
 import NavigationGoBack from '@/components/navigation/NavigationGoBack';
-import { useForm } from 'react-hook-form';
-import { AntDesign, Fontisto, MaterialIcons } from '@expo/vector-icons';
 import { COLOR_SYSTEM } from '@/constants/Colors';
+import { EROUTER } from '@/constants/enum';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { senOTPAPI } from '@/services/api/auth.api';
-import { Link, useRouter } from 'expo-router';
-import { EROUTER } from '@/constants/enum';
 import { ValidationError, ValidationSchema } from '@/utils/validation';
+import { AntDesign, Fontisto } from '@expo/vector-icons';
+import { Link, useRouter } from 'expo-router';
+import React, { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { Keyboard } from 'react-native';
 
 const forgotPasswordScreen = () => {
   const router = useRouter();

@@ -1,15 +1,16 @@
 // import { HOST_API_APP } from '@env';
+import { ESTORAGE } from '@/constants/enum';
+import { BASE_URL } from '@/constants/urls';
+
 import { asyncStorageService } from '@/utils/storage';
 import axios from 'axios';
 const client = axios.create({
-  // baseURL: String('http://192.168.1.3:7001/api/'), /** home*/
-  // baseURL: String('http://172.20.10.12:7001/api/') /** moblie*/,
-  baseURL: String('http://192.168.1.10:7001/api/') /** ktx*/,
+  baseURL: BASE_URL,
   timeout: 100000,
 });
 client.interceptors.request.use(
   async (config) => {
-    const access_token = await asyncStorageService.getValue('access_token');
+    const access_token = await asyncStorageService.getValue(ESTORAGE.TOKEN);
     if (config.method === 'get') {
       const currentTime = new Date().getTime();
       const oldUrl: any = config.url;
