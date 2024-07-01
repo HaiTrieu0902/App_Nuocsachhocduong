@@ -174,6 +174,33 @@ class HardwarePermissions {
       console.log(resultIOS, `step 1`);
     }
   };
+
+  public static requestNotificationPermission = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const resultAnd = await check(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+        console.log('📢[HardwarePermissions.ts:167]: resultAnd: ', resultAnd);
+
+        switch (resultAnd) {
+          case RESULTS.GRANTED:
+            return true;
+          case RESULTS.BLOCKED:
+            fnGoToSetting('Nước học đường muốn gửi thông báo cho bạn. Vui lòng cấp quyền');
+            return false;
+          case RESULTS.DENIED:
+            const granted = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+            if (granted !== RESULTS.GRANTED && granted !== RESULTS.LIMITED) {
+              fnGoToSetting('Nước học đường muốn gửi thông báo cho bạn. Vui lòng cấp quyền');
+            }
+            return granted === RESULTS.GRANTED;
+          default:
+            return false;
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 export default HardwarePermissions;

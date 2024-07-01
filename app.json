@@ -54,6 +54,16 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      "expo-notifications",
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default",
+          "sounds": ["./local/assets/notification-sound.wav", "./local/assets/notification-sound-other.wav"]
+        }
       ]
     ],
     "experiments": {

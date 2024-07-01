@@ -4,10 +4,12 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_SIZE_PAGE } from '@/constants';
 import useLoading from '@/hooks/useLoading';
+import { usePushNotifications } from '@/hooks/useNotification';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { IGetListParamCommon } from '@/models/common.model';
 import { INews } from '@/models/news.model';
 import { getListNewsAPI } from '@/services/api/news.api';
+import { requestPermission } from '@/utils/notificationService';
 import { useIsFocused } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -81,10 +83,14 @@ const HomeScreen = () => {
     setRefreshing(false);
   };
 
+  const { expoPushToken, notification } = usePushNotifications();
+  console.log('📢 [index.tsx:86]', expoPushToken);
+  console.log('📢 [index.tsx:88]', notification);
   useEffect(() => {
     if (isFocused) {
       handleGetListNews(searchParams, false);
     }
+    //requestPermission();
   }, [isFocused]);
 
   return (
