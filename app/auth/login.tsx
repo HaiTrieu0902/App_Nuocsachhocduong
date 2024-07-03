@@ -3,14 +3,16 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import { EROUTER, ESTORAGE } from '@/constants/enum';
+import { usePushNotifications } from '@/hooks/useNotification';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { ILoginParams } from '@/models/auth.model';
 import { loginAPI } from '@/services/api/auth.api';
+import { requestPermission } from '@/utils/notificationService';
 import { asyncStorageService } from '@/utils/storage';
 import { ValidationError, ValidationSchema } from '@/utils/validation';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Keyboard } from 'react-native';
 const LoginScreen = () => {
@@ -37,6 +39,12 @@ const LoginScreen = () => {
       showToast(`${e?.message}`, 'danger', 'top');
     } finally {
     }
+  }, []);
+
+  // const { expoPushToken, notification } = usePushNotifications();
+
+  useEffect(() => {
+    requestPermission();
   }, []);
 
   return (

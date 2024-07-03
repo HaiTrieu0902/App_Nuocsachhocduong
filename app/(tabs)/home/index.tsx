@@ -83,12 +83,10 @@ const HomeScreen = () => {
     setRefreshing(false);
   };
 
-  const { expoPushToken, notification } = usePushNotifications();
   useEffect(() => {
     if (isFocused) {
       handleGetListNews(searchParams, false);
     }
-    //requestPermission();
   }, [isFocused]);
 
   return (
