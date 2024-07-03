@@ -35,6 +35,7 @@ const MaintainanceScreen = () => {
     search: '',
     isDelete: false,
   });
+
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [activeModalFilter, actionModalFilter] = useModal();
@@ -99,10 +100,11 @@ const MaintainanceScreen = () => {
     Keyboard.dismiss();
     setRefreshing(true);
     const resetParams = {
+      ...searchParams,
       pageSize: DEFAULT_SIZE_PAGE,
       page: DEFAULT_PAGE_NUMBER,
-      search: '',
     };
+
     setSearchParams(resetParams);
     await handleGetListMaintenance(resetParams, false);
     setRefreshing(false);
@@ -129,7 +131,7 @@ const MaintainanceScreen = () => {
     if (isFocused) {
       handleGetListMaintenance(searchParams, false);
     }
-  }, [isFocused, searchParams]);
+  }, [isFocused, searchParams, authUser]);
 
   const renderItemPost = useCallback(({ item, index }: { item: IMaintenance; index: number }) => {
     return (
@@ -208,7 +210,7 @@ const MaintainanceScreen = () => {
     const fetchTokenAndUser = async () => {
       const token = await getAuthUser();
       setAuthUser(token);
-      console.log('token', token);
+
       if (token?.role?.role === EROLE.PRINCIPAL) {
         setSearchParams((prev) => ({
           ...prev,

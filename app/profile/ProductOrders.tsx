@@ -137,9 +137,7 @@ const ProductOrdersScreen = () => {
   );
 
   useEffect(() => {
-    if (isFocused) {
-      handleGetListProduct(searchParams, false);
-    }
+    handleGetListProduct(searchParams, false);
   }, [active, searchParams, isFocused]);
 
   useEffect(() => {

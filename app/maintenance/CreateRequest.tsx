@@ -146,20 +146,22 @@ const CreateRequestScreen = () => {
   );
 
   useEffect(() => {
-    const fechListInstallRecord = async () => {
-      const res = await getListInstallRecordAPI({
-        pageSize: DEFAULT_SIZE_PAGE_MAX,
-        page: DEFAULT_PAGE_NUMBER,
-        statusId: ESTATUS.COMPLETED,
-      });
-      setListInstallRecord(res?.data);
-    };
     const fetchTokenAndUser = async () => {
       const token = await getAuthUser();
       setAuthUser(token);
+
+      const fechListInstallRecord = async () => {
+        const res = await getListInstallRecordAPI({
+          pageSize: DEFAULT_SIZE_PAGE_MAX,
+          page: DEFAULT_PAGE_NUMBER,
+          statusId: ESTATUS.COMPLETED,
+          accountId: token?.id,
+        });
+        setListInstallRecord(res?.data);
+      };
+      fechListInstallRecord();
     };
     fetchTokenAndUser();
-    fechListInstallRecord();
   }, []);
 
   const convertListInstallRecord = listInstallRecord?.map((item) => ({

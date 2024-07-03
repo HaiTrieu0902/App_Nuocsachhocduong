@@ -84,8 +84,6 @@ const HomeScreen = () => {
   };
 
   const { expoPushToken, notification } = usePushNotifications();
-  console.log('📢 [index.tsx:86]', expoPushToken);
-  console.log('📢 [index.tsx:88]', notification);
   useEffect(() => {
     if (isFocused) {
       handleGetListNews(searchParams, false);
