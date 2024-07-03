@@ -43,9 +43,9 @@ const LoginScreen = () => {
 
   // const { expoPushToken, notification } = usePushNotifications();
 
-  useEffect(() => {
-    requestPermission();
-  }, []);
+  // useEffect(() => {
+  //   requestPermission();
+  // }, []);
 
   return (
     <SafeAreaViewUI className="px-5">
