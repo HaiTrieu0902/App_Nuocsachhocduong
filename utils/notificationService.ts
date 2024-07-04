@@ -3,34 +3,27 @@ import firebase from '@react-native-firebase/app';
 import { PermissionsAndroid, Platform } from 'react-native';
 import HardwarePermissions from '@/core/HardwarePermissions';
 
-export async function requestPermission() {
-  if (Platform.OS === 'android' && Platform.Version >= 33) {
-    const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION);
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      getFCMToken();
-    } else {
-      console.log('permisstion Token');
-    }
-  } else {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      console.log('get FCM token');
-      getFCMToken();
-    }
+export const requestPermission = async () => {
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  if (enabled) {
+    console.log('OKE NHE', authStatus);
   }
-}
+  return enabled;
+};
 
-export const getFCMToken = async () => {
+export const getFCMToken = async (conditions: any) => {
   try {
-    // const defaultMess = firebase.messaging();
-    // return defaultMess.getToken();
-    await messaging().registerDeviceForRemoteMessages();
-    const token = await messaging().getToken();
-    console.log('token', token);
+    if (conditions) {
+      messaging()
+        .getToken()
+        .then((token) => {
+          console.log('📢 [notificationService.ts:19]', token);
+        });
+    } else {
+      console.log('Permisstion not granted', conditions);
+    }
   } catch (error) {
     console.log('📢 [notificationService.ts:19]', error);
   }

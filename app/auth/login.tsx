@@ -3,7 +3,6 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import { EROUTER, ESTORAGE } from '@/constants/enum';
-import { usePushNotifications } from '@/hooks/useNotification';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { ILoginParams } from '@/models/auth.model';
 import { loginAPI } from '@/services/api/auth.api';
@@ -11,10 +10,11 @@ import { requestPermission } from '@/utils/notificationService';
 import { asyncStorageService } from '@/utils/storage';
 import { ValidationError, ValidationSchema } from '@/utils/validation';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import messaging from '@react-native-firebase/messaging';
 import { Link, useRouter } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Keyboard } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 const LoginScreen = () => {
   const router = useRouter();
   const showToast = useToastNotifications();
@@ -45,6 +45,38 @@ const LoginScreen = () => {
 
   // useEffect(() => {
   //   requestPermission();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (requestPermission() as never) {
+  //     messaging()
+  //       .getToken()
+  //       .then((token) => {
+  //         console.log('📢 [notificationService.ts:19]', token);
+  //       });
+  //   } else {
+  //     console.log('Permisstion not granted');
+  //   }
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(async (remoteMessage) => {
+  //       if (remoteMessage) {
+  //         console.log('📢 [Login.tsx:63]', remoteMessage);
+  //       }
+  //     });
+
+  //   messaging().onNotificationOpenedApp((remoteMessage) => {
+  //     console.log('Notification background state:', remoteMessage);
+  //   });
+  //   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  //     console.log('Message handle background:', remoteMessage);
+  //   });
+
+  //   const unsbucribe = messaging().onMessage(async (remoteMessage) => {
+  //     Alert.alert('A new Fcm message arrived!', JSON.stringify(remoteMessage));
+  //   });
+
+  //   return unsbucribe;
   // }, []);
 
   return (
