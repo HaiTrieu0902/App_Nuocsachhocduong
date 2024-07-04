@@ -128,7 +128,7 @@ const MaintainanceScreen = () => {
   };
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && authUser) {
       handleGetListMaintenance(searchParams, false);
     }
   }, [isFocused, searchParams, authUser]);

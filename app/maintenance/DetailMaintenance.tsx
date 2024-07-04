@@ -175,7 +175,9 @@ const DetailMaintenanceScreen = () => {
                 <ThemedText className="text-base font-normal ">
                   Thời gian xử lý:{' '}
                   <ThemedText className={'!text-infomation_regular'}>
-                    {true ? format(new Date(), 'dd/MM/yyyy HH:mm:ss') : 'N/A'}
+                    {maintenance?.timeMaintenance
+                      ? format(new Date(maintenance?.timeMaintenance), 'dd/MM/yyyy HH:mm:ss')
+                      : 'N/A'}
                   </ThemedText>
                 </ThemedText>
 

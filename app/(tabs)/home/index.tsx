@@ -4,16 +4,14 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_SIZE_PAGE } from '@/constants';
 import useLoading from '@/hooks/useLoading';
-import { usePushNotifications } from '@/hooks/useNotification';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { IGetListParamCommon } from '@/models/common.model';
 import { INews } from '@/models/news.model';
 import { getListNewsAPI } from '@/services/api/news.api';
-import { requestPermission } from '@/utils/notificationService';
 import { useIsFocused } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, RefreshControl, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, RefreshControl } from 'react-native';
 
 const HomeScreen = () => {
   const showToast = useToastNotifications();
