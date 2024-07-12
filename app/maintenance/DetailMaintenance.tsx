@@ -227,6 +227,7 @@ const DetailMaintenanceScreen = () => {
       </ScrollView>
 
       {(authUser?.role?.role === EROLE.STAFF && maintenance?.status?.id === ESTATUS.COMPLETE) ||
+      (authUser?.role?.role === EROLE.STAFF && maintenance?.status?.id === ESTATUS.COMPLETED) ||
       (authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETED) ? (
         <></>
       ) : (

@@ -101,15 +101,15 @@ const ProfileScreen = () => {
         enable: true,
       },
       {
-        name: 'Danh sách sản phẩm đã lắp đặt',
+        name: 'Danh sách hồ sơ lắp đặt',
         icon: <FontAwesome name="list-alt" size={24} color={COLOR_SYSTEM.primary} />,
         routeName: EROUTER.PROFILE_LIST_ORDER,
         index: 2,
         enable: true,
       },
       {
-        name: 'Danh sách thiết bị đã sửa chữa',
-        icon: <FontAwesome name="gears" size={24} color={COLOR_SYSTEM.primary} />,
+        name: 'Thống kê - báo cáo',
+        icon: <FontAwesome name="bar-chart" size={24} color={COLOR_SYSTEM.primary} />,
         routeName: EROUTER.PROFILE_LIST_MAINTENANCE,
         index: 3,
         enable: authUser?.role?.role === EROLE.STAFF ? false : true,
