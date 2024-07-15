@@ -8,14 +8,13 @@ export interface IRevenueDetails {
 }
 
 export interface IRevenueList {
-  schools: number;
-  staffs: number;
+  schools?: number;
+  staffs?: number;
   installRecords: number;
-  maintenances: number;
-  totalInstallRecord: number;
+  quantity?: number;
+  totalAmount?: number;
   totalMaitenance: number;
   dataChartInstall: DataChart[];
-  dataChartMaintenance: DataChart[];
 }
 
 export interface DataChart {
