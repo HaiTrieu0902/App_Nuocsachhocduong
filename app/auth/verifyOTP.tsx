@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, Platform, StyleSheet, Text, View } from 'react-native';
 import React, { useCallback } from 'react';
 import { SafeAreaViewUI, ThemedButton, ThemedInput } from '@/components';
 import { ThemedView } from '@/components/ThemedView';
@@ -90,9 +90,18 @@ const VerifyOTPScreen = () => {
           }}
           maxLength={255}
           className={'relative mt-3 '}
-          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
+          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+            Platform.OS === 'android' ? 'py-3' : 'py-4'
+          } `}
           classNameStyleLabel={'text-lg text-text_color'}
-          icon={<FontAwesome5 name="keyboard" size={24} color={COLOR_SYSTEM.primary} />}
+          icon={
+            <FontAwesome5
+              name="keyboard"
+              className={`${Platform.OS === 'android' && 'mt-[3px]'}`}
+              size={24}
+              color={COLOR_SYSTEM.primary}
+            />
+          }
         />
 
         <ThemedView className={'mt-4 items-end'}>

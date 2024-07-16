@@ -2,7 +2,7 @@ import { COLOR_SYSTEM } from '@/constants/Colors';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { AntDesign, Feather, FontAwesome6 } from '@expo/vector-icons';
 import React, { ReactNode, useEffect, useState } from 'react';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Platform, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import '../global.css';
 interface ModalFilterProps {
   isVisible: boolean;
@@ -42,6 +42,16 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
       setSelectedFilter(data[0]?.value);
     }
   }, [isRefresh]);
+
+  useEffect(() => {
+    if (isVisible && Platform.OS === 'android') {
+      StatusBar.setBackgroundColor(COLOR_SYSTEM.overlay);
+      StatusBar.setBarStyle('dark-content');
+    } else if (Platform.OS === 'android') {
+      StatusBar.setBackgroundColor('transparent');
+      StatusBar.setBarStyle('dark-content');
+    }
+  }, [isVisible]);
 
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible} onRequestClose={closeModal}>

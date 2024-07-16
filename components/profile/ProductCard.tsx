@@ -2,7 +2,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { memo } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, Platform } from 'react-native';
 import { ThemedView } from '../ThemedView';
 import { ThemedText } from '../ThemedText';
 import AppImage from '../AppImage';
@@ -21,7 +21,7 @@ const ProductCard = ({ lightColor, darkColor, className, mode, data }: ProductCa
   const router = useRouter();
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
   return (
-    <ThemedView className={`${className}  mt-4`}>
+    <ThemedView className={`${className}  mt-4 bg-white`}>
       <TouchableOpacity
         onPress={() => {
           if (mode === 'orders') {
@@ -31,7 +31,7 @@ const ProductCard = ({ lightColor, darkColor, className, mode, data }: ProductCa
           }
         }}
       >
-        <View
+        <ThemedView
           style={styleSheet}
           className={`flex flex-row gap-4 items-center !shadow-2xl rounded-[12px] !w-full border`}
         >
@@ -54,23 +54,26 @@ const ProductCard = ({ lightColor, darkColor, className, mode, data }: ProductCa
               <ThemedText numberOfLines={2} className="text-text_color_regular text-base font-semibold ">
                 {data?.product?.name}
               </ThemedText>
-              <View className="flex flex-row gap-2">
-                <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
+              <View className="flex flex-row gap-2 border-none !bg-transparent">
+                <Text
+                  className="text-text_color_regular text-xl"
+                  style={{ fontWeight: 300, fontSize: 14, backgroundColor: 'transparent' }}
+                >
                   Số lượng:
-                </ThemedText>
+                </Text>
                 <ThemedText className=" text-xl font-normal " style={{ fontWeight: 500, fontSize: 14 }}>
                   {data?.quantity} thiết bị
                 </ThemedText>
               </View>
               <View className="flex flex-row gap-2">
-                <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
+                <Text className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
                   Trạng thái :
-                </ThemedText>
+                </Text>
                 <ThemedText className="!text-primary text-xl font-normal " style={{ fontWeight: 500, fontSize: 14 }}>
                   {data?.status?.name}
                 </ThemedText>
               </View>
-              <View className="flex flex-row gap-2">
+              <ThemedText className="flex flex-row gap-2">
                 <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
                   Thành tiền:
                 </ThemedText>
@@ -80,7 +83,7 @@ const ProductCard = ({ lightColor, darkColor, className, mode, data }: ProductCa
                 >
                   {Number(data?.totalAmount).toLocaleString()} VNĐ
                 </ThemedText>
-              </View>
+              </ThemedText>
             </View>
           ) : (
             <View className="pl-4 w-[100%]">
@@ -100,7 +103,7 @@ const ProductCard = ({ lightColor, darkColor, className, mode, data }: ProductCa
               </ThemedText>
             </View>
           )}
-        </View>
+        </ThemedView>
       </TouchableOpacity>
     </ThemedView>
   );

@@ -1,10 +1,9 @@
-import { View, Text, Button } from 'react-native';
-import React from 'react';
-import { Tabs, router, useSegments } from 'expo-router';
-import { Feather, AntDesign } from '@expo/vector-icons';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import { EROUTER } from '@/constants/enum';
-
+import { AntDesign, Feather } from '@expo/vector-icons';
+import { Tabs, useSegments } from 'expo-router';
+import React from 'react';
+import { Platform } from 'react-native';
 export default function _layout() {
   const segments = useSegments();
   const hide = segments.includes('[id]');
@@ -17,8 +16,8 @@ export default function _layout() {
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '400',
-          marginBottom: -4,
-          marginTop: -8,
+          marginBottom: Platform.OS === 'android' ? 4 : -4,
+          marginTop: Platform.OS === 'android' ? -8 : -8,
         },
         // tabBarStyle: {
         //   display: hide ? 'none' : 'flex',

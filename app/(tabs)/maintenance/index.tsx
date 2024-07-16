@@ -19,7 +19,7 @@ import { format } from 'date-fns';
 import { router } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ActivityIndicator, Keyboard, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Keyboard, Platform, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 
 const MaintainanceScreen = () => {
   const showToast = useToastNotifications();
@@ -142,7 +142,13 @@ const MaintainanceScreen = () => {
         }}
       >
         <ThemedView
-          className="rounded-xl p-4 border-l-[8px] border !border-text_color_light mt-4"
+          className={`rounded-xl p-4 border-l-[8px] border !border-text_color_light mt-4 ${
+            Platform.OS === 'android' && item?.status?.id === ESTATUS.PENDING
+              ? '!border-error_regular !border'
+              : Platform.OS === 'android' && item?.status?.id === ESTATUS.INPROGRESS
+              ? '!border-infomation_regular !border'
+              : Platform.OS === 'android' && '!border-primary !border'
+          }`}
           style={[
             styleSheet,
             {
@@ -239,11 +245,18 @@ const MaintainanceScreen = () => {
             iconDisplay="right"
             maxLength={255}
             className={'relative mt-3 '}
-            classNameStyleInput={'relative border border-text_color_regular bg-white rounded-md pl-4 pr-4 py-3 '}
+            classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-4 pr-4  ${
+              Platform.OS === 'android' ? 'py-2' : 'py-3'
+            }`}
             classNameStyleLabel={'text-lg text-text_color'}
             icon={
               <TouchableOpacity onPress={handleSubmit(handleSearch)}>
-                <Octicons name="search" className="-mt-1" size={24} color={COLOR_SYSTEM.primary} />
+                <Octicons
+                  name="search"
+                  className={`-mt-1 ${Platform.OS === 'android' ? 'mt-0' : ''}`}
+                  size={Platform.OS === 'android' ? 20 : 24}
+                  color={COLOR_SYSTEM.primary}
+                />
               </TouchableOpacity>
             }
           />
@@ -254,7 +267,7 @@ const MaintainanceScreen = () => {
               name="filter"
               onPress={actionModalFilter.toggleModal}
               className="mt-3"
-              size={26}
+              size={Platform.OS === 'android' ? 24 : 26}
               color={COLOR_SYSTEM.primary}
             />
           </TouchableOpacity>
@@ -263,7 +276,12 @@ const MaintainanceScreen = () => {
               router.push(EROUTER.MAINTENACE_CREATE_REQUEST);
             }}
           >
-            <AntDesign name="plus" className="mt-3" size={26} color={COLOR_SYSTEM.primary} />
+            <AntDesign
+              name="plus"
+              className="mt-3"
+              size={Platform.OS === 'android' ? 24 : 26}
+              color={COLOR_SYSTEM.primary}
+            />
           </TouchableOpacity>
         </View>
       </ThemedView>

@@ -165,7 +165,12 @@ const ProductOrdersScreen = () => {
 
   return (
     <SafeAreaViewUI className="px-6 !w-full">
-      <NavigationGoBack title="Danh sách các thiết bị đầu tư" titleAlight />
+      <NavigationGoBack
+        title={`${
+          authUser?.role?.role === EROLE.PRINCIPAL ? 'Danh sách các thiết bị đầu tư' : 'Danh sách các thiết bị lắt đặt'
+        } `}
+        titleAlight
+      />
 
       <ThemedView className={'mb-2 mt-2'}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>

@@ -2,7 +2,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import { useRouter } from 'expo-router';
 import React, { memo } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-
+import { Platform } from 'react-native';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import { BASE_URL } from '@/constants/urls';
 import { INews } from '@/models/news.model';
@@ -18,14 +18,6 @@ type AppCardProps = {
   data: INews | IProduct | any;
 };
 
-// const isNews = (data: INews | IProduct): data is INews =>{
-//   return (data as INews).thumbnail !== undefined;
-// }
-
-// const isProduct = (data: INews | IProduct): data is IProduct => {
-//   return (data as IProduct).price !== undefined;
-// }
-
 const AppCard = ({ lightColor, darkColor, className, mode, data }: AppCardProps) => {
   const router = useRouter();
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
@@ -40,8 +32,13 @@ const AppCard = ({ lightColor, darkColor, className, mode, data }: AppCardProps)
         !w-full border`}
           >
             <AppImage
-              style={{ borderRadius: 8 }}
+              style={{
+                borderRadius: 8,
+                height: Platform.OS === 'android' ? 178 : 180,
+                width: Platform.OS === 'android' ? 178 : 180,
+              }}
               size="xxl"
+              //  Platform.OS === 'android' ?
               className={'object-cover'}
               uri={`${BASE_URL}${data?.images[0]}`}
             />

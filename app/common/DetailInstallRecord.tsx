@@ -123,60 +123,60 @@ const DetailInstallRecordScreen = () => {
       </ThemedView>
 
       <ThemedView className="py-4 border-b border-text_color_light">
-        <View className="flex flex-row items-center gap-3">
+        <ThemedView className="flex flex-row items-center gap-3">
           <MaterialIcons name="school" size={24} color={COLOR_SYSTEM.primary} />
           <ThemedText className={'font-semibold'}>Thông tin trường học lắp đặt</ThemedText>
-        </View>
+        </ThemedView>
 
-        <View className="flex flex-row items-center mt-2  w-full">
+        <ThemedView className="flex flex-row items-center mt-2  w-full">
           <ThemedText>Trường: </ThemedText>
           <ThemedText className={''}> {data?.school?.name ? data?.school?.name : 'N/A'}</ThemedText>
-        </View>
-        <View className="flex flex-row w-full">
+        </ThemedView>
+        <ThemedView className="flex flex-row w-full">
           <ThemedText>Địa chỉ: </ThemedText>
           <ThemedText numberOfLines={2} className={' w-[88%] mt-1'}>
             {data?.school?.address ? data?.school?.address : 'N/A'}
           </ThemedText>
-        </View>
-        <View className="flex flex-row items-center  w-full mt-1">
+        </ThemedView>
+        <ThemedView className="flex flex-row items-center  w-full mt-1">
           <ThemedText>Email: </ThemedText>
           <ThemedText className={''}> {data?.school?.email ? data?.school?.email : 'N/A'}</ThemedText>
-        </View>
-        <View className="flex flex-row items-center  w-full mt-1">
+        </ThemedView>
+        <ThemedView className="flex flex-row items-center  w-full mt-1">
           <ThemedText>SĐT: </ThemedText>
           <ThemedText className={''}> {data?.school?.phoneNumber ? data?.school?.phoneNumber : 'N/A'}</ThemedText>
-        </View>
+        </ThemedView>
       </ThemedView>
 
       <ThemedView className="py-4 border-b border-text_color_light">
-        <View className="flex flex-row items-center gap-3">
+        <ThemedView className="flex flex-row items-center gap-3">
           <Entypo name="water" size={24} color={COLOR_SYSTEM.primary} />
           <ThemedText className={'font-semibold'}>Thông tin thiết bị</ThemedText>
-        </View>
-        <View
+        </ThemedView>
+        <ThemedView
           style={styleSheet}
           className={`flex flex-row gap-4 items-center !shadow-2xl rounded-[12px] !w-full mt-2 `}
         >
           <AppImage
             size="large"
-            className={``}
+            className={`border border-text_color_regular`}
             style={{ borderRadius: 10 }}
             uri={`${BASE_URL}${data?.product?.images[0] || ''}`}
           />
-          <View style={{ width: '66%' }}>
+          <ThemedView style={{ width: '66%' }}>
             <ThemedText numberOfLines={2} className="text-text_color_regular text-base font-semibold ">
               {data?.product?.name || ''}
             </ThemedText>
-            <View className="flex flex-row gap-2">
+            <ThemedView className="flex flex-row gap-2">
               <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
                 Số lượng:
               </ThemedText>
               <ThemedText className=" text-xl font-normal " style={{ fontWeight: 500, fontSize: 14 }}>
                 {data?.quantity || ''} thiết bị
               </ThemedText>
-            </View>
+            </ThemedView>
 
-            <View className="flex flex-row gap-2">
+            <ThemedView className="flex flex-row gap-2">
               <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
                 Giá thiết bị:
               </ThemedText>
@@ -193,9 +193,9 @@ const DetailInstallRecordScreen = () => {
                 } `}{' '}
                 VNĐ
               </ThemedText>
-            </View>
+            </ThemedView>
 
-            <View className="flex flex-row gap-2">
+            <ThemedView className="flex flex-row gap-2">
               <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
                 Giá gốc:
               </ThemedText>
@@ -205,18 +205,18 @@ const DetailInstallRecordScreen = () => {
               >
                 {Number(data?.product?.price).toLocaleString()} VNĐ
               </ThemedText>
-            </View>
-          </View>
-        </View>
+            </ThemedView>
+          </ThemedView>
+        </ThemedView>
 
-        <View className="flex flex-row items-center justify-between gap-3">
+        <ThemedView className="flex flex-row items-center justify-between gap-3">
           <ThemedText className="text-text_color_regular text-xl" style={{ fontWeight: 300, fontSize: 14 }}>
             Thành tiền:
           </ThemedText>
           <ThemedText className="!text-error_regular text-xl font-normal " style={{ fontWeight: 500, fontSize: 14 }}>
             {Number(data?.totalAmount).toLocaleString()} VNĐ
           </ThemedText>
-        </View>
+        </ThemedView>
       </ThemedView>
 
       <ThemedView>

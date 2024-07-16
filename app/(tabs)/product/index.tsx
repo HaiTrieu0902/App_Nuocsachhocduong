@@ -14,7 +14,7 @@ import { FlashList } from '@shopify/flash-list';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, Keyboard, RefreshControl, TouchableOpacity, View } from 'react-native';
-
+import { Platform } from 'react-native';
 const ProductScreen = () => {
   const showToast = useToastNotifications();
   const isFocused = useIsFocused();
