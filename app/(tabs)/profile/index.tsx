@@ -1,15 +1,16 @@
-import { AppImage, SafeAreaViewUI, ThemedButton } from '@/components';
+import { AppImage, ModalFilter, SafeAreaViewUI, ThemedButton } from '@/components';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import { EROLE, EROUTER, ESTORAGE } from '@/constants/enum';
 import { BASE_URL } from '@/constants/urls';
 import useLoading from '@/hooks/useLoading';
+import useModal from '@/hooks/useModal';
 import { getAuthUser } from '@/hooks/useStorage';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { IProfileDetail } from '@/models/profile.model';
 import { UploadImagesApi } from '@/services/api/common.api';
-import { getProfileUserAPI, updateImageUserAPI } from '@/services/api/profile.api';
+import { deleteUserAPI, getProfileUserAPI, updateImageUserAPI } from '@/services/api/profile.api';
 import { asyncStorageService } from '@/utils/storage';
 import { AntDesign, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
@@ -17,7 +18,7 @@ import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 const ProfileScreen = () => {
   const isPrincipal = '';
@@ -27,7 +28,7 @@ const ProfileScreen = () => {
   const [authUser, setAuthUser] = useState<any>(null);
   const [profile, setProfile] = useState<IProfileDetail>({} as IProfileDetail);
   const [image, setImage] = useState<any>(null);
-
+  const [activeModalFilter, actionModalFilter] = useModal();
   /** handle get profile  */
   const fetchProfileUser = async (id: string) => {
     await withLoading(async () => {
@@ -47,6 +48,21 @@ const ProfileScreen = () => {
     await asyncStorageService.removeValue(ESTORAGE.USER);
     showToast(`Đăng xuất thành công`, 'success', 'top');
     router.push(EROUTER.LOGIN);
+  };
+
+  const handleDisableAccount = async () => {
+    if (authUser?.id) {
+      try {
+        await deleteUserAPI(authUser?.id);
+        await asyncStorageService.removeValue(ESTORAGE.TOKEN);
+        await asyncStorageService.removeValue(ESTORAGE.USER);
+        showToast(`Vô hiệu hóa tài khoản thành công`, 'success', 'top');
+        actionModalFilter.closeModal();
+        router.push(EROUTER.LOGIN);
+      } catch (error: any) {
+        showToast(`${error?.message}`, 'danger', 'top');
+      }
+    }
   };
 
   /** handle pick Image */
@@ -195,11 +211,13 @@ const ProfileScreen = () => {
       </ThemedView>
 
       <ThemedButton
+        onPress={actionModalFilter.toggleModal}
         text="Vô hiệu hóa tài khoản"
         svgIcon={<FontAwesome name="ban" size={20} color={COLOR_SYSTEM.white} />}
         iconPosition="right"
         className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-error_regular mt-10`}
       />
+
       <ThemedButton
         onPress={handleLogout}
         text="Đăng Xuất"
@@ -207,6 +225,43 @@ const ProfileScreen = () => {
         iconPosition="right"
         className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-primary mt-6`}
       />
+      <ModalFilter
+        mode="children"
+        titleHeader="Vô hiệu hóa tài khoản"
+        data={[]}
+        isVisible={activeModalFilter.isOpen}
+        closeModal={actionModalFilter.closeModal}
+        onSelected={() => {}}
+      >
+        <ThemedView className={'h-64'}>
+          <ThemedText className={'text-center font-semibold text-2xl !text-text_color_regular'}>
+            Bạn thực sự muốn vô hiệu hóa tài khoản?
+          </ThemedText>
+          <ThemedView className={' flex flex-row gap-2'}>
+            <View className="w-[49%]">
+              <ThemedButton
+                onPress={actionModalFilter.closeModal}
+                text="Hủy bỏ"
+                iconPosition="right"
+                className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-text_color_regular mt-6 `}
+              />
+            </View>
+            <View className="w-[49%]">
+              <ThemedButton
+                onPress={handleDisableAccount}
+                text="Đồng ý"
+                iconPosition="right"
+                className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-error mt-6 `}
+              />
+            </View>
+          </ThemedView>
+
+          <ThemedText className={'text-center font-normal text-base !text-text_color mt-3'}>
+            Sau khi vô hiệu hóa bạn liên hệ với admin để có quyền truy cập lại, Mọi vấn đề thắc mắc xin liện hệ tại{' '}
+            <ThemedText className={'!text-primary'}>nuocsachhocduong@gmail.com</ThemedText>
+          </ThemedText>
+        </ThemedView>
+      </ModalFilter>
     </SafeAreaViewUI>
   );
 };

@@ -4,13 +4,14 @@ import { AntDesign, Feather, FontAwesome6 } from '@expo/vector-icons';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Modal, Platform, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import '../global.css';
+import { ThemedView } from './ThemedView';
 interface ModalFilterProps {
   isVisible: boolean;
   closeModal: () => void;
   onSelected: (value: string | number) => void;
   data: any[];
   titleHeader: string;
-  children?: ReactNode;
+  children?: React.ReactNode | any;
   lightColor?: string;
   darkColor?: string;
   isRefresh?: boolean;

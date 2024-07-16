@@ -20,5 +20,5 @@ export const changePasswordAPI = async (payload: IChangePassword) => {
 };
 
 export const deleteUserAPI = async (id: string) => {
-  return client.post(`user/delete-user/${id}`).then((res) => res?.data);
+  return client.delete(`user/delete-user/${id}`).then((res) => res?.data);
 };
