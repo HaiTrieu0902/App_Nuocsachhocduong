@@ -10,11 +10,13 @@ import { getAuthUser } from '@/hooks/useStorage';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { IMaintenance } from '@/models/maintenance.model';
 import { getDetailMaintenanceAPI, updateStatusMaintenanceAPI } from '@/services/api/maintenance.api';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
+import { Button, FlatList, Keyboard, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 
 const DetailMaintenanceScreen = () => {
   const { id } = useLocalSearchParams();
@@ -23,6 +25,65 @@ const DetailMaintenanceScreen = () => {
   const flatListRef = useRef<FlatList>(null);
   const [authUser, setAuthUser] = useState<any>(null);
   const [maintenance, setMaintenance] = useState<IMaintenance>({} as IMaintenance);
+  const generateHTML = () => {
+    return `
+      <html>
+        <body>
+          <h1>Chi tiết bảo trì</h1>
+          <h2>Trường THTP Nguyễn Đức Mậu</h2>
+          <p>Trạng thái: <span style="color: ${
+            maintenance?.status?.id === ESTATUS.PENDING
+              ? COLOR_SYSTEM.errorRegular
+              : maintenance?.status?.id === ESTATUS.INPROGRESS
+              ? COLOR_SYSTEM.informationRegular
+              : COLOR_SYSTEM.primary
+          };">${maintenance?.status?.name} (${maintenance?.categoryMaintenance?.name})</span></p>
+          <p>Tiêu đề: ${maintenance?.title}</p>
+          <p>Thời gian sự cố: ${
+            maintenance?.createdAt ? format(new Date(maintenance?.createdAt), 'dd/MM/yyyy HH:mm:ss') : 'N/A'
+          }</p>
+          <p>Hiện trạng: ${maintenance?.reason}</p>
+          <p>Ảnh đính kèm:</p>
+          ${maintenance?.images_request
+            .map(
+              (img) =>
+                `<img src="${BASE_URL}${img}" alt="image" style="width: 100px; height: auto; border: 1px solid; margin-right: 10px;">`,
+            )
+            .join('')}
+          ${
+            maintenance?.status?.id === ESTATUS.COMPLETE || maintenance?.status?.id === ESTATUS.COMPLETED
+              ? `
+              <h2>Nhân viên xử lý: ${
+                authUser?.role?.role === EROLE.STAFF && authUser?.id === maintenance?.staff?.id
+                  ? 'Tôi'
+                  : maintenance?.staff?.fullName
+              }</h2>
+              <p>Thời gian xử lý: ${
+                maintenance?.timeMaintenance
+                  ? format(new Date(maintenance?.timeMaintenance), 'dd/MM/yyyy HH:mm:ss')
+                  : 'N/A'
+              }</p>
+              ${
+                Number(maintenance?.repairFees) > 0
+                  ? `<p>Số tiền sửa chữa: ${Number(maintenance?.repairFees).toLocaleString()} VNĐ</p>`
+                  : ''
+              }
+              <p>Nguyên nhân: ${maintenance?.reasonRepair}</p>
+              <p>Phương án xử lý: ${maintenance?.solution}</p>
+              <p>Ảnh xử lý:</p>
+              ${maintenance?.images_response
+                ?.map(
+                  (img: any) =>
+                    `<img src="${BASE_URL}${img}" alt="image" style="width: 100px; height: auto; border: 1px solid; margin-right: 10px;">`,
+                )
+                .join('')}
+            `
+              : ''
+          }
+        </body>
+      </html>
+    `;
+  };
 
   const handleGetDetailMaintenance = async (id: string) => {
     const res = await getDetailMaintenanceAPI(id);
@@ -94,6 +155,19 @@ const DetailMaintenanceScreen = () => {
     fetchTokenAndUser();
   }, []);
 
+  const handleGeneratePdf = useCallback(async () => {
+    try {
+      Keyboard.dismiss();
+      const file = await Print.printToFileAsync({
+        html: generateHTML(),
+        base64: false,
+      });
+      await shareAsync(file.uri);
+    } catch (e: any) {
+      showToast(`${e?.message}`, 'danger', 'top');
+    } finally {
+    }
+  }, [maintenance, authUser]);
   return (
     <SafeAreaViewUI className="px-6 !w-full">
       <NavigationGoBack title="Thay thế lõi lọc nước 6 tháng" titleAlight />
@@ -225,38 +299,51 @@ const DetailMaintenanceScreen = () => {
           </>
         )}
       </ScrollView>
-
       {(authUser?.role?.role === EROLE.STAFF && maintenance?.status?.id === ESTATUS.COMPLETE) ||
       (authUser?.role?.role === EROLE.STAFF && maintenance?.status?.id === ESTATUS.COMPLETED) ||
       (authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETED) ? (
         <></>
       ) : (
-        <ThemedView className="mt-4">
+        <>
+          <ThemedView className="mt-4">
+            <ThemedButton
+              disabled={
+                (authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.PENDING) || isLoading
+              }
+              text={`${
+                authUser?.role?.role === EROLE.STAFF && maintenance?.status?.id === ESTATUS.PENDING
+                  ? 'Tiếp nhận và xử lý'
+                  : authUser?.role?.role === EROLE.STAFF && maintenance?.status?.id === ESTATUS.INPROGRESS
+                  ? 'Hoàn thành'
+                  : authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETE
+                  ? 'Xác nhận hoàn thành'
+                  : 'Đang chờ xử lý'
+              }  `}
+              iconPosition="left"
+              className={`flex flex-row justify-center items-center rounded-md py-4 gap-2 ${
+                authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETE
+                  ? 'bg-primary'
+                  : 'bg-infomation_regular'
+              }  `}
+              svgIcon={
+                authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETE ? (
+                  <Ionicons name="shield-checkmark-outline" size={24} color={'white'} />
+                ) : undefined
+              }
+              onPress={handleUpdateStatusMaitenance}
+            />
+          </ThemedView>
+        </>
+      )}
+
+      {authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETED && (
+        <ThemedView>
           <ThemedButton
-            disabled={
-              (authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.PENDING) || isLoading
-            }
-            text={`${
-              authUser?.role?.role === EROLE.STAFF && maintenance?.status?.id === ESTATUS.PENDING
-                ? 'Tiếp nhận và xử lý'
-                : authUser?.role?.role === EROLE.STAFF && maintenance?.status?.id === ESTATUS.INPROGRESS
-                ? 'Hoàn thành'
-                : authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETE
-                ? 'Xác nhận hoàn thành'
-                : 'Đang chờ xử lý'
-            }  `}
-            iconPosition="left"
-            className={`flex flex-row justify-center items-center rounded-md py-4 gap-2 ${
-              authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETE
-                ? 'bg-primary'
-                : 'bg-infomation_regular'
-            }  `}
-            svgIcon={
-              authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.COMPLETE ? (
-                <Ionicons name="shield-checkmark-outline" size={24} color={'white'} />
-              ) : undefined
-            }
-            onPress={handleUpdateStatusMaitenance}
+            text={`In ${maintenance?.categoryMaintenance?.name}`}
+            svgIcon={<AntDesign name="printer" size={20} color={COLOR_SYSTEM.white} />}
+            iconPosition="right"
+            className={`flex flex-row justify-center items-center rounded-md py-3 gap-2 bg-primary `}
+            onPress={handleGeneratePdf}
           />
         </ThemedView>
       )}
