@@ -15,13 +15,16 @@ import {
   getDetailInstallRecordAPI,
   updateStatusInstallRecordAPI,
 } from '@/services/api/install.api';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 import { getButtonText } from '@/utils/helper';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import { format } from 'date-fns';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { generateInstallRecordHTML } from '@/utils/htmlTemplate';
 const DetailInstallRecordScreen = () => {
   const [authUser, setAuthUser] = useState<any>(null);
   const showToast = useToastNotifications();
@@ -51,7 +54,11 @@ const DetailInstallRecordScreen = () => {
             return;
           }
           if (data?.status?.id === ESTATUS.COMPLETED) {
-            router.push(EPUSH_ROUTER.MAINTENACE);
+            const file = await Print.printToFileAsync({
+              html: generateInstallRecordHTML(data, authUser),
+              base64: false,
+            });
+            await shareAsync(file.uri);
             return;
           }
 
@@ -79,7 +86,7 @@ const DetailInstallRecordScreen = () => {
         }
       });
     },
-    [data],
+    [data, authUser],
   );
 
   useEffect(() => {
@@ -230,7 +237,13 @@ const DetailInstallRecordScreen = () => {
             (authUser?.role?.role === EROLE.PRINCIPAL && data?.status?.id === ESTATUS.INPROGRESS_INSTALL)
           }
           text={getButtonText(data)}
-          // svgIcon={<FontAwesome name="sign-out" size={22} color={COLOR_SYSTEM.white} />}
+          svgIcon={
+            authUser?.role?.role === EROLE.PRINCIPAL && data?.status?.id === ESTATUS.COMPLETED ? (
+              <AntDesign name="printer" size={20} color={COLOR_SYSTEM.white} />
+            ) : (
+              <></>
+            )
+          }
           iconPosition="right"
           className={`flex flex-row justify-center items-center rounded-md py-4 gap-2 ${
             data?.status?.id === ESTATUS.PEDING_INSTALL

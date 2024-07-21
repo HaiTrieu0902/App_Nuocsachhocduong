@@ -58,7 +58,7 @@ export const updateImageUrls = (content: string) => {
 export const getButtonText = (data: any) => {
   switch (data?.status?.id) {
     case ESTATUS.COMPLETED:
-      return 'Sửa chữa - Bảo dưỡng';
+      return 'In hồ sơ lắp đặt';
     case ESTATUS.COMPLETE:
       return 'Xác nhận đã hoàn thành';
     case ESTATUS.INPROGRESS_INSTALL:
