@@ -26,7 +26,7 @@ const AppCard = ({ lightColor, darkColor, className, mode, data }: AppCardProps)
     <ThemedView className={`${className}  mt-4`}>
       {mode === 'product' ? (
         <TouchableOpacity className="!w-full" onPress={() => router.push(`/product/${data?.id}`)}>
-          <View
+          <ThemedView
             style={styleSheetProduct}
             className={`flex  flex-col gap-2  !shadow-2xl rounded-[12px] 
         !w-full border`}
@@ -60,11 +60,11 @@ const AppCard = ({ lightColor, darkColor, className, mode, data }: AppCardProps)
             >
               {Number(data?.price).toLocaleString()} VNĐ
             </ThemedText>
-          </View>
+          </ThemedView>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity onPress={() => router.push(`/home/${data?.id}`)}>
-          <View
+          <ThemedView
             style={styleSheet}
             className={`flex flex-row gap-4 items-center !shadow-2xl rounded-[12px] 
         !w-full border`}
@@ -78,7 +78,7 @@ const AppCard = ({ lightColor, darkColor, className, mode, data }: AppCardProps)
             >
               {data?.summary}
             </ThemedText>
-          </View>
+          </ThemedView>
         </TouchableOpacity>
       )}
     </ThemedView>

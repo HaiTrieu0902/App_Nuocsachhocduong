@@ -66,7 +66,7 @@ const ProductScreen = () => {
 
   const renderItemPost = useCallback(({ item, index }: { item: any; index: number }) => {
     return (
-      <View
+      <ThemedView
         style={{
           flex: 1,
           display: 'flex',
@@ -75,7 +75,7 @@ const ProductScreen = () => {
         }}
       >
         <AppCard key={item?.id} mode="product" data={item} />
-      </View>
+      </ThemedView>
     );
   }, []);
 
@@ -142,7 +142,9 @@ const ProductScreen = () => {
               iconDisplay="right"
               maxLength={255}
               className={'relative mt-3 '}
-              classNameStyleInput={'relative border border-text_color_regular bg-white rounded-md pl-4 pr-4 py-3 '}
+              classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-4 pr-4  ${
+                Platform.OS === 'android' ? 'py-2' : 'py-3'
+              }`}
               classNameStyleLabel={'text-lg text-text_color'}
               icon={
                 <TouchableOpacity onPress={handleSubmit(handleSearch)}>
