@@ -271,16 +271,19 @@ const MaintainanceScreen = () => {
               color={COLOR_SYSTEM.primary}
             />
           </TouchableOpacity>
+
           <TouchableOpacity
             onPress={() => {
-              router.push(EROUTER.MAINTENACE_CREATE_REQUEST);
+              if (authUser?.role?.role === EROLE.PRINCIPAL) {
+                router.push(EROUTER.MAINTENACE_CREATE_REQUEST);
+              }
             }}
           >
             <AntDesign
               name="plus"
               className="mt-3"
               size={Platform.OS === 'android' ? 24 : 26}
-              color={COLOR_SYSTEM.primary}
+              color={authUser?.role?.role === EROLE.PRINCIPAL ? COLOR_SYSTEM.primary : COLOR_SYSTEM.modalBg}
             />
           </TouchableOpacity>
         </View>

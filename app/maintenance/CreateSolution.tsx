@@ -40,8 +40,9 @@ const CreateSolutionScreen = () => {
       await withLoading(async () => {
         try {
           Keyboard.dismiss();
-          const resImages = await UploadImagesApi(images as never);
-          const urls = resImages?.data?.map((item: any) => `common/images/${item?.filename}`);
+          const resImages = images?.length > 0 ? await UploadImagesApi(images as never) : [];
+          const urls =
+            resImages?.data?.length > 0 ? resImages?.data?.map((item: any) => `common/images/${item?.filename}`) : [''];
           const params = {
             id: id,
             repairFees: Number(values?.repairFees) || 0,
@@ -55,8 +56,7 @@ const CreateSolutionScreen = () => {
           showToast(`Hoàn thành xử lý sự cố`, 'success', 'top');
           router.push(EPUSH_ROUTER.MAINTENACE);
         } catch (e: any) {
-          console.log('e', e);
-          showToast(`${e?.message}`, 'danger', 'top');
+          showToast(`${e}`, 'danger', 'top');
         }
       });
     },

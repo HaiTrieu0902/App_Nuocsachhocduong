@@ -17,7 +17,7 @@ import * as Print from 'expo-print';
 import { router, useLocalSearchParams } from 'expo-router';
 import { shareAsync } from 'expo-sharing';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
+import { FlatList, Keyboard, Platform, ScrollView, Text, View } from 'react-native';
 
 const DetailMaintenanceScreen = () => {
   const { id } = useLocalSearchParams();
@@ -250,7 +250,7 @@ const DetailMaintenanceScreen = () => {
         <></>
       ) : (
         <>
-          <ThemedView className="mt-4">
+          <ThemedView className={`mt-4 ${Platform.OS === 'android' && 'mb-4'}`}>
             <ThemedButton
               disabled={
                 (authUser?.role?.role === EROLE.PRINCIPAL && maintenance?.status?.id === ESTATUS.PENDING) || isLoading
