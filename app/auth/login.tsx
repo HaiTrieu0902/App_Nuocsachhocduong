@@ -3,16 +3,19 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { COLOR_SYSTEM } from '@/constants/Colors';
 import { EROUTER, ESTORAGE } from '@/constants/enum';
+import { usePushNotifications } from '@/hooks/useNotification';
 import useToastNotifications from '@/hooks/useToastNotifications';
 import { ILoginParams } from '@/models/auth.model';
 import { loginAPI } from '@/services/api/auth.api';
+import { requestPermission } from '@/utils/notificationService';
 import { asyncStorageService } from '@/utils/storage';
 import { ValidationError, ValidationSchema } from '@/utils/validation';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Keyboard } from 'react-native';
+import { Keyboard, Platform } from 'react-native';
+
 const LoginScreen = () => {
   const router = useRouter();
   const showToast = useToastNotifications();
@@ -39,6 +42,14 @@ const LoginScreen = () => {
     }
   }, []);
 
+  // const { expoPushToken, notification } = usePushNotifications();
+
+  // useEffect(() => {
+  //   if (Platform.OS === 'android') {
+  //     requestPermission();
+  //   }
+  // }, []);
+
   return (
     <SafeAreaViewUI className="px-5">
       <ThemedView className="mt-20">
@@ -56,9 +67,18 @@ const LoginScreen = () => {
           required
           maxLength={255}
           className={'relative mt-3 '}
-          classNameStyleInput={'relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4'}
+          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+            Platform.OS === 'android' ? 'py-3' : 'py-4'
+          } `}
           classNameStyleLabel={'text-lg text-text_color'}
-          icon={<AntDesign name="user" size={24} color={COLOR_SYSTEM.primary} />}
+          icon={
+            <AntDesign
+              name="user"
+              size={24}
+              className={`${Platform.OS === 'android' && 'mt-[3px]'}`}
+              color={COLOR_SYSTEM.primary}
+            />
+          }
         />
       </ThemedView>
 
@@ -71,22 +91,31 @@ const LoginScreen = () => {
           isPassword
           required
           maxLength={255}
-          // rules={{
-          //   validate: (value: string) => {
-          //     if (value.length < 8) {
-          //       return ValidationError.password.min;
-          //     }
-          //     if (value.length > 255) {
-          //       return ValidationError.password.max;
-          //     } else if (!value.match(ValidationSchema.password)) {
-          //       return ValidationError.password.pattern;
-          //     }
-          //   },
-          // }}
+          rules={{
+            validate: (value: string) => {
+              if (value.length < 8) {
+                return ValidationError.password.min;
+              }
+              if (value.length > 255) {
+                return ValidationError.password.max;
+              } else if (!value.match(ValidationSchema.password)) {
+                return ValidationError.password.pattern;
+              }
+            },
+          }}
           className={'relative mt-3 '}
-          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
+          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+            Platform.OS === 'android' ? 'py-3' : 'py-4'
+          } `}
           classNameStyleLabel={'text-lg text-text_color'}
-          icon={<MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />}
+          icon={
+            <MaterialIcons
+              name="lock-outline"
+              size={24}
+              className={`${Platform.OS === 'android' && 'mt-[3px]'}`}
+              color={COLOR_SYSTEM.primary}
+            />
+          }
         />
 
         <Link href={EROUTER.FORGOTPASSWORD} className="mt-2">

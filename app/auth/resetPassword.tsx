@@ -77,7 +77,9 @@ const forgotPasswordScreen = () => {
             }}
             maxLength={255}
             className={'relative mt-3 '}
-            classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
+            classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+              Platform.OS === 'android' ? 'py-3' : 'py-4'
+            } `}
             classNameStyleLabel={'text-lg text-text_color'}
             icon={<MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />}
           />
@@ -105,9 +107,18 @@ const forgotPasswordScreen = () => {
             }}
             maxLength={255}
             className={'relative mt-3 '}
-            classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
+            classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+              Platform.OS === 'android' ? 'py-3' : 'py-4'
+            } `}
             classNameStyleLabel={'text-lg text-text_color'}
-            icon={<MaterialIcons name="lock-outline" size={24} color={COLOR_SYSTEM.primary} />}
+            icon={
+              <MaterialIcons
+                name="lock-outline"
+                className={`${Platform.OS === 'android' && 'mt-[3px]'}`}
+                size={24}
+                color={COLOR_SYSTEM.primary}
+              />
+            }
           />
         </ThemedView>
 

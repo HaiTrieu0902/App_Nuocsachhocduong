@@ -1,3 +1,6 @@
+import { EMAINTENANCE, ESTATUS } from '@/constants/enum';
+import { BASE_URL } from '@/constants/urls';
+import { IInstallRecord } from '@/models/install.model';
 import { Dimensions, Platform } from 'react-native';
 
 export const isIphoneWithNotch = (): boolean => {
@@ -44,3 +47,61 @@ export const s = scale;
 export const vs = verticalScale;
 export const ms = moderateScale;
 export const mvs = moderateVerticalScale;
+
+export const updateImageUrls = (content: string) => {
+  return content.replace(/<img [^>]*src="([^"]+)"[^>]*>/g, (match, p1) => {
+    const newUrl = `${BASE_URL}${p1}`;
+    return match.replace(p1, newUrl);
+  });
+};
+
+export const getButtonText = (data: any) => {
+  switch (data?.status?.id) {
+    case ESTATUS.COMPLETED:
+      return 'In hồ sơ lắp đặt';
+    case ESTATUS.COMPLETE:
+      return 'Xác nhận đã hoàn thành';
+    case ESTATUS.INPROGRESS_INSTALL:
+      return 'Hoàn thành';
+    default:
+      return data?.isDelete === false ? 'Hủy yêu cầu' : 'Mua lại';
+  }
+};
+
+export const handleGetCategoryMaintenance = (data: IInstallRecord[], idSelected: string): string => {
+  const currentRecord = data.find((item) => item.id === idSelected);
+  if (!currentRecord || !currentRecord.timeInstall || !currentRecord.warrantyPeriod) {
+    return 'Chưa xác định';
+  }
+
+  const timeInstall = new Date(currentRecord.timeInstall);
+  const warrantyEndDate = new Date(timeInstall);
+  warrantyEndDate.setMonth(timeInstall.getMonth() + currentRecord.warrantyPeriod);
+
+  const currentDate = new Date();
+
+  if (currentDate <= warrantyEndDate) {
+    return 'Bảo hành';
+  } else {
+    return 'Sửa chữa';
+  }
+};
+
+export const handleGetCategoryMaintenanceId = (data: IInstallRecord[], idSelected: string): string => {
+  const currentRecord = data.find((item) => item.id === idSelected);
+  if (!currentRecord || !currentRecord.timeInstall || !currentRecord.warrantyPeriod) {
+    return 'Không xác định';
+  }
+
+  const timeInstall = new Date(currentRecord.timeInstall);
+  const warrantyEndDate = new Date(timeInstall);
+  warrantyEndDate.setMonth(timeInstall.getMonth() + currentRecord.warrantyPeriod);
+
+  const currentDate = new Date();
+
+  if (currentDate <= warrantyEndDate) {
+    return EMAINTENANCE?.BD;
+  } else {
+    return EMAINTENANCE?.SC;
+  }
+};

@@ -29,11 +29,13 @@ export interface AppInputProps extends TextInputProps {
   icon?: React.ReactNode;
   subLabel?: string;
   link?: string;
+  iconDisplay?: 'right' | 'left';
   placeholder?: string;
   subBtn?: React.ReactNode;
   className?: string | any;
   classNameStyleInput?: string | any;
   classNameStyleLabel?: string | any;
+  notCheck?: boolean;
 }
 
 const ThemedInput = forwardRef(
@@ -55,6 +57,8 @@ const ThemedInput = forwardRef(
       className,
       classNameStyleInput,
       classNameStyleLabel,
+      iconDisplay = 'left',
+      notCheck = false,
       ...restProps
     }: AppInputProps,
     ref: React.LegacyRef<TextInput>,
@@ -109,11 +113,19 @@ const ThemedInput = forwardRef(
                   {...restProps}
                   //   style={[Layout.fill, textStyles, restProps.textStyles]}
                 />
-                <TouchableOpacity style={{ position: 'absolute', top: 10, left: 10 }}>
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    top: 10,
+                    left: iconDisplay === 'right' ? undefined : 10,
+                    right: iconDisplay === 'right' ? 10 : undefined,
+                  }}
+                >
                   {!!icon && icon}
                 </TouchableOpacity>
               </View>
-              {Boolean(error?.message || subBtn) && (
+
+              {Boolean(error?.message || subBtn) && !notCheck && (
                 <View>
                   {error?.message && (
                     <ThemedText style={{ color: COLOR_SYSTEM.errorRegular, marginTop: 6 }}>{error.message}</ThemedText>

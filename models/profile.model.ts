@@ -18,6 +18,7 @@ export interface IProfileDetail {
   phoneNumber: string;
   roleID: string;
   schoolIdS: string[];
+  schools: any[];
   avatar: string;
   isDelete: boolean;
   codeOTP: null | any;

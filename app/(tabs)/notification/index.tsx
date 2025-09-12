@@ -1,89 +1,167 @@
-import { View, Text, Image, Platform, StyleSheet, Button } from 'react-native';
-import React from 'react';
-import { SafeAreaViewUI } from '@/components';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedView } from '@/components/ThemedView';
+import { NotFoundItemIcon, SafeAreaViewUI } from '@/components';
 import { ThemedText } from '@/components/ThemedText';
-import { HelloWave } from '@/components/HelloWave';
-import { router } from 'expo-router';
+import { ThemedView } from '@/components/ThemedView';
+import { DEFAULT_PAGE_NUMBER, DEFAULT_SIZE_PAGE } from '@/constants';
+import { COLOR_SYSTEM } from '@/constants/Colors';
+import useLoading from '@/hooks/useLoading';
+import { getAuthUser } from '@/hooks/useStorage';
+import useToastNotifications from '@/hooks/useToastNotifications';
+import { IGetListParamNotification, INotification } from '@/models/notification.model';
+import { getListNotificationAPI } from '@/services/api/notification.api';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
+import { format } from 'date-fns';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, Keyboard, RefreshControl } from 'react-native';
 
 const NotificationScreen = () => {
+  const showToast = useToastNotifications();
+  const isFocused = useIsFocused();
+  const [listNotification, setListNotification] = useState<INotification[]>([]);
+  const { isLoading, withLoading } = useLoading();
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const keyExtractor = React.useCallback((_: any, index: number) => String(index), []);
+  const [total, setTotal] = useState<number>(0);
+  const [searchParams, setSearchParams] = useState<IGetListParamNotification>({
+    pageSize: 14,
+    page: DEFAULT_PAGE_NUMBER,
+    search: '',
+  });
+
+  const handleGetListNotification = async (values: IGetListParamNotification, isLoadMore = false) => {
+    await withLoading(async () => {
+      try {
+        const res = await getListNotificationAPI(values);
+        setTotal(res?.total);
+        if (isLoadMore) {
+          setListNotification((prev) => [...prev, ...res?.data]);
+        } else {
+          setListNotification(res?.data);
+        }
+      } catch (error: any) {
+        showToast(`${error?.message}`, 'danger', 'top');
+      }
+    });
+  };
+
+  const handleLoadMore = () => {
+    if (isLoadingMore || listNotification.length >= total) return;
+    const nextPage = searchParams.page + 1;
+    if (nextPage > Math.ceil(total / searchParams.pageSize)) return;
+    setIsLoadingMore(true);
+    handleGetListNotification(
+      {
+        ...searchParams,
+        page: nextPage,
+      },
+      true,
+    ).finally(() => {
+      setSearchParams((prev) => ({
+        ...prev,
+        page: nextPage,
+      }));
+      setIsLoadingMore(false);
+    });
+  };
+
+  const renderItemPost = useCallback(({ item }: { item: INotification }) => {
+    return (
+      <ThemedView key={item?.id} className={'mt-4 flex flex-row gap-3'}>
+        <ThemedView className={'h-14 w-14 rounded-full !bg-primary flex items-center justify-center'}>
+          {item?.isRead === false ? (
+            <>
+              <MaterialCommunityIcons name="bell-ring-outline" size={24} color={COLOR_SYSTEM.errorRegular} />
+            </>
+          ) : (
+            <>
+              <Feather name="bell" size={24} color="white" />
+            </>
+          )}
+        </ThemedView>
+
+        <ThemedView className={'flex flex-row gap-3 w-[80%]'}>
+          <ThemedView>
+            <ThemedText numberOfLines={2} className={'font-semibold'}>
+              {item?.data?.title}
+            </ThemedText>
+            <ThemedText className={'mt-1'}>
+              {item?.isRead === false ? 'Tin nhắn chưa đọc' : 'Tin nhắn đã đọc'}{' '}
+              <ThemedText className={'!text-text_color_regular'}>
+                {'- '}
+                {item?.data?.time ? format(new Date(item?.data?.time), 'dd/MM/yyyy HH:mm:ss') : 'N/A'}
+              </ThemedText>
+            </ThemedText>
+          </ThemedView>
+        </ThemedView>
+      </ThemedView>
+    );
+  }, []);
+
+  const handleRefresh = async () => {
+    Keyboard.dismiss();
+    setRefreshing(true);
+    const resetParams = {
+      ...searchParams,
+      pageSize: 14,
+      page: DEFAULT_PAGE_NUMBER,
+    };
+
+    setSearchParams(resetParams);
+    await handleGetListNotification(resetParams, false);
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    if (isFocused && searchParams?.receiverId) {
+      handleGetListNotification(searchParams, false);
+    }
+  }, [isFocused, searchParams]);
+
+  useEffect(() => {
+    const fetchTokenAndUser = async () => {
+      const token = await getAuthUser();
+      setSearchParams((prev) => ({
+        ...prev,
+        receiverId: token?.id,
+      }));
+    };
+
+    fetchTokenAndUser();
+  }, []);
+
+  console.log('searchParams', searchParams);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{' '}
-          <ThemedText type="defaultSemiBold">{Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}</ThemedText> to
-          open developer tools.
+    <SafeAreaViewUI className="px-6">
+      <ThemedView>
+        <ThemedText className="text-text_color font-semibold text-[32px] mt-3 uppercase text-center">
+          Thông báo
         </ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>Tap the Explore tab to learn more about what's included in this starter app.</ThemedText>
+      <ThemedView style={{ flex: 1 }} className={''}>
+        {listNotification?.length > 0 ? (
+          <FlashList
+            data={listNotification || []}
+            renderItem={renderItemPost}
+            keyExtractor={keyExtractor}
+            estimatedItemSize={120}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.1}
+            showsVerticalScrollIndicator={false}
+            ListFooterComponent={isLoadingMore ? <ActivityIndicator /> : null}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+          />
+        ) : (
+          <ThemedView className={'flex items-center'}>
+            <NotFoundItemIcon />
+            <ThemedText className={'text-lg'}>Hiện tại chưa có thông báo nào </ThemedText>
+          </ThemedView>
+        )}
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-      <View className="bg-red-500">
-        <Text>Blue create</Text>
-      </View>
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-red-800">Chán trong cái người thật! 🎉</Text>
-      </View>
-      <Button onPress={() => router.push('/notification/1')} title="Go To Home 1" />
-    </ParallaxScrollView>
+    </SafeAreaViewUI>
   );
 };
 
 export default NotificationScreen;
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
-
-// import { Button, StyleSheet, Text, View } from 'react-native';
-// import React from 'react';
-// import { router, useLocalSearchParams } from 'expo-router';
-
-// const DetailNewsScreen = () => {
-//   const { id, author } = useLocalSearchParams();
-//   return (
-//     <View>
-//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//         <Text style={{ fontSize: 18 }}>Blog Post Details {id}</Text>
-//         <Text style={{ fontSize: 18 }}>Written by {author}</Text>
-//         <Button onPress={() => router.back()} title="Go Back" />
-//       </View>
-//     </View>
-//   );
-// };
-
-// export default DetailNewsScreen;

@@ -11,7 +11,7 @@ import { AntDesign, Fontisto } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { Keyboard } from 'react-native';
+import { Keyboard, Platform } from 'react-native';
 
 const forgotPasswordScreen = () => {
   const router = useRouter();
@@ -75,9 +75,18 @@ const forgotPasswordScreen = () => {
           }}
           maxLength={255}
           className={'relative mt-3 '}
-          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4`}
+          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+            Platform.OS === 'android' ? 'py-3' : 'py-4'
+          } `}
           classNameStyleLabel={'text-lg text-text_color'}
-          icon={<Fontisto name="email" size={24} color={COLOR_SYSTEM.primary} />}
+          icon={
+            <Fontisto
+              name="email"
+              className={`${Platform.OS === 'android' && 'mt-[3px]'}`}
+              size={24}
+              color={COLOR_SYSTEM.primary}
+            />
+          }
         />
         <ThemedView className={'mt-8'}>
           <ThemedButton

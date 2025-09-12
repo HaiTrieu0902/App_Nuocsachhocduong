@@ -1,10 +1,11 @@
 // import { HOST_API_APP } from '@env';
 import { ESTORAGE } from '@/constants/enum';
-import { BASE_URL_PGS } from '@/constants/urls';
+import { BASE_URL } from '@/constants/urls';
+
 import { asyncStorageService } from '@/utils/storage';
 import axios from 'axios';
 const client = axios.create({
-  baseURL: BASE_URL_PGS,
+  baseURL: BASE_URL,
   timeout: 100000,
 });
 client.interceptors.request.use(

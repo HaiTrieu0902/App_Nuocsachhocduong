@@ -1,6 +1,6 @@
 import { useToast } from 'react-native-toast-notifications';
 import { ViewStyle } from 'react-native';
-
+import { Platform } from 'react-native';
 type PlacementType = 'top' | 'bottom' | 'center';
 
 const useToastNotifications = () => {
@@ -16,7 +16,7 @@ const useToastNotifications = () => {
       alignItems: 'center',
     };
     if (placement === 'top') {
-      toastStyle.top = 40;
+      toastStyle.top = 50;
     } else if (placement === 'bottom') {
       toastStyle.bottom = 10;
     }

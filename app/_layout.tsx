@@ -19,14 +19,15 @@ export default function _layout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  console.log('token', token);
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
       // Navigate to login after fonts are loaded
+      router.push(EROUTER?.LOGIN);
       if (token) {
         router.push(EROUTER?.HOME);
       } else {
-        router.push(EROUTER?.LOGIN);
       }
     }
   }, [loaded, token]);
@@ -56,21 +57,27 @@ export default function _layout() {
           >
             {token ? (
               <>
+                <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
+                <Stack.Screen name={EROUTER.TABS} options={{ headerShown: false }} />
+
+                <Stack.Screen name={EROUTER.PROFILE_INFOMATION} />
+                <Stack.Screen name={EROUTER.PROFILE_CHANGE_PASS} />
+                <Stack.Screen name={EROUTER.PROFILE_LIST_ORDER} />
+                <Stack.Screen name={EROUTER.PROFILE_LIST_MAINTENANCE} />
+                <Stack.Screen name={EROUTER.PROFILE_LIST_SCHOOL} />
+
+                <Stack.Screen name={EROUTER.MAINTENACE_CREATE_REQUEST} />
+                <Stack.Screen name={EROUTER.MAINTENACE_CREATE_SOLUTION} />
+                <Stack.Screen name={EROUTER.MAINTENACE_DETAIL} />
+
+                <Stack.Screen name={EROUTER.DETAIL_INSTALL_RECORD} />
+              </>
+            ) : (
+              <>
                 <Stack.Screen name={EROUTER.LOGIN} options={{ headerTitle: 'Home' }} />
                 <Stack.Screen name={EROUTER.FORGOTPASSWORD} options={{ headerTitle: 'Forgot Password' }} />
                 <Stack.Screen name={EROUTER.RESETPASSWORD} options={{ headerTitle: 'Reset Password' }} />
                 <Stack.Screen name={EROUTER.VERIFYOTP} options={{ headerTitle: 'Verify OTP' }} />
-              </>
-            ) : (
-              <>
-                <Stack.Screen name="blog/index" options={{ headerTitle: 'All Blog Posts' }} />
-                <Stack.Screen name={EROUTER.TABS} options={{ headerShown: false }} />
-
-                {/* Profile */}
-                <Stack.Screen name={EROUTER.PROFILE_INFOMATION} options={{ headerTitle: 'Profile Infomation' }} />
-                <Stack.Screen name={EROUTER.PROFILE_CHANGE_PASS} options={{ headerTitle: 'Profile Change Password' }} />
-                <Stack.Screen name={EROUTER.PROFILE_LIST_ORDER} options={{ headerTitle: 'Profile List Orders' }} />
-                <Stack.Screen name={EROUTER.PROFILE_LIST_SCHOOL} options={{ headerTitle: 'Profile List School' }} />
               </>
             )}
 

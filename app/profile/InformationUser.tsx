@@ -11,6 +11,7 @@ import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Platform } from 'react-native';
 
 const InformationUserScreen = () => {
   const { isLoading, withLoading } = useLoading();
@@ -59,7 +60,9 @@ const InformationUserScreen = () => {
               }
             },
           }}
-          classNameStyleInput={'relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4'}
+          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+            Platform.OS === 'android' ? 'py-3' : 'py-4'
+          } `}
           classNameStyleLabel={'text-lg text-text_color'}
           icon={<AntDesign name="user" size={24} color={COLOR_SYSTEM.primary} />}
         />
@@ -81,7 +84,9 @@ const InformationUserScreen = () => {
           }}
           maxLength={255}
           className={'relative mt-2 '}
-          classNameStyleInput={'relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4'}
+          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+            Platform.OS === 'android' ? 'py-3' : 'py-4'
+          } `}
           classNameStyleLabel={'text-lg text-text_color'}
           icon={<Feather name="phone" size={24} color={COLOR_SYSTEM.primary} />}
         />
@@ -105,7 +110,9 @@ const InformationUserScreen = () => {
             },
           }}
           className={'relative mt-2 '}
-          classNameStyleInput={'relative border border-text_color_regular bg-white rounded-md pl-12 pr-4 py-4'}
+          classNameStyleInput={`relative border border-text_color_regular bg-white rounded-md pl-12 pr-4  ${
+            Platform.OS === 'android' ? 'py-3' : 'py-4'
+          } `}
           classNameStyleLabel={'text-lg text-text_color'}
           icon={<Fontisto name="email" size={24} color={COLOR_SYSTEM.primary} />}
         />

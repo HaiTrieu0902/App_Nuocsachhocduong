@@ -1,48 +1,86 @@
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { memo } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-
+import { TouchableOpacity, View } from 'react-native';
+import { Platform } from 'react-native';
 import { COLOR_SYSTEM } from '@/constants/Colors';
-import { ThemedView } from './ThemedView';
+import { BASE_URL } from '@/constants/urls';
+import { INews } from '@/models/news.model';
 import AppImage from './AppImage';
 import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
+import { IProduct } from '@/models/product.model';
 type AppCardProps = {
   lightColor?: string;
   darkColor?: string;
   className?: string | any;
-  mode: 'news' | '';
+  mode: 'news' | 'product';
+  data: INews | IProduct | any;
 };
 
-const AppCard = ({ lightColor, darkColor, className, mode }: AppCardProps) => {
+const AppCard = ({ lightColor, darkColor, className, mode, data }: AppCardProps) => {
   const router = useRouter();
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
   return (
     <ThemedView className={`${className}  mt-4`}>
-      <TouchableOpacity onPress={() => router.push('/home/1')}>
-        <View
-          style={styleSheet}
-          className={`flex flex-row gap-4 items-center !shadow-2xl rounded-[12px] 
-            !w-full border`}
-        >
-          <AppImage
-            className={` object-contain w-28 h-28 rounded-md`}
-            uri={'https://static1.srcdn.com/wordpress/wp-content/uploads/2023/09/gojo-satoru-1.jpg'}
-          />
-          <ThemedText
-            className="text-text_color_regular text-xl "
-            style={{ fontWeight: 300, fontSize: 14, width: '68%' }}
-            numberOfLines={4}
-            ellipsizeMode="tail"
+      {mode === 'product' ? (
+        <TouchableOpacity className="!w-full" onPress={() => router.push(`/product/${data?.id}`)}>
+          <ThemedView
+            style={styleSheetProduct}
+            className={`flex  flex-col gap-2  !shadow-2xl rounded-[12px] 
+        !w-full border`}
           >
-            Hệ thống lọc tổng cần được bảo trì, sục rửa, hoàn nguyên định kỳ mới có thể hoạt động tốt được. Bạn thì lại
-            quá bận rộn, không có thời Hệ thống lọc tổng cần được bảo trì, sục rửa, hoàn nguyên định kỳ mới có thể hoạt
-            động tốt được. Bạn thì lại quá bận rộn, không có thời
-          </ThemedText>
-        </View>
-      </TouchableOpacity>
+            <AppImage
+              style={{
+                borderRadius: 8,
+                height: Platform.OS === 'android' ? 178 : 180,
+                width: Platform.OS === 'android' ? 178 : 180,
+              }}
+              size="xxl"
+              //  Platform.OS === 'android' ?
+              className={'object-cover'}
+              uri={`${BASE_URL}${data?.images[0]}`}
+            />
+            <ThemedText
+              className="text-text_color_regular text-xl font-semibold  pl-4"
+              style={{ fontWeight: 300, fontSize: 14 }}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {data?.name}
+            </ThemedText>
+
+            <ThemedText className="!text-primary text-base font-medium text-left pl-4 ">
+              {`${Number(data?.price - (data?.price * data?.discount) / 100).toLocaleString()} `} VNĐ
+            </ThemedText>
+            <ThemedText
+              style={{ textDecorationLine: 'line-through', marginBottom: 6 }}
+              className="!text-text_color_regular text-base  text-left font-medium !line-through pl-4 "
+            >
+              {Number(data?.price).toLocaleString()} VNĐ
+            </ThemedText>
+          </ThemedView>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={() => router.push(`/home/${data?.id}`)}>
+          <ThemedView
+            style={styleSheet}
+            className={`flex flex-row gap-4 items-center !shadow-2xl rounded-[12px] 
+        !w-full border`}
+          >
+            <AppImage style={{ borderRadius: 8 }} size="medium" uri={`${BASE_URL}${data?.thumbnail}`} />
+            <ThemedText
+              className="text-text_color_regular text-xl "
+              style={{ fontWeight: 300, fontSize: 14, width: '68%' }}
+              numberOfLines={4}
+              ellipsizeMode="tail"
+            >
+              {data?.summary}
+            </ThemedText>
+          </ThemedView>
+        </TouchableOpacity>
+      )}
     </ThemedView>
   );
 };
@@ -61,4 +99,10 @@ export const styleSheet = {
   shadowRadius: 4,
   elevation: 5,
   shadowColor: COLOR_SYSTEM.black,
+};
+
+export const styleSheetProduct = {
+  borderRadius: 10,
+  padding: 0,
+  borderColor: COLOR_SYSTEM.textColorLight,
 };
